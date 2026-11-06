@@ -1,0 +1,91 @@
+namespace HomeRun.Models
+{
+    /// <summary>
+    /// A single exercise within a workout.
+    /// </summary>
+    public class Move
+    {
+        /// <summary>
+        /// The name of the move.
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Whether the move is rep based, held or interval based.
+        /// </summary>
+        public MoveType Type { get; set; }
+
+        /// <summary>
+        /// The reps, or the minimum reps when a range is given.
+        /// </summary>
+        public int Reps { get; set; }
+
+        /// <summary>
+        /// The maximum reps when a range is given.
+        /// </summary>
+        public int? RepsMax { get; set; }
+
+        /// <summary>
+        /// The hold seconds, or the minimum seconds when a range is given.
+        /// </summary>
+        public int Seconds { get; set; }
+
+        /// <summary>
+        /// The maximum hold seconds when a range is given.
+        /// </summary>
+        public int? SecondsMax { get; set; }
+
+        /// <summary>
+        /// The label for moves done on each leg or side, such as Leg or Side.
+        /// </summary>
+        public string? Each { get; set; }
+
+        /// <summary>
+        /// Optional tips or easier variations.
+        /// </summary>
+        public string? Notes { get; set; }
+
+        /// <summary>
+        /// The slow lowering time in seconds, or 0 for normal tempo.
+        /// </summary>
+        public int LowerSeconds { get; set; }
+
+        /// <summary>
+        /// A short description of the reps or hold time.
+        /// </summary>
+        public string Summary
+        {
+            get
+            {
+                if (Type == MoveType.Interval)
+                {
+                    return string.Empty;
+                }
+                string amount = Type == MoveType.Reps ? $"{Range(Reps, RepsMax)} Reps" : $"{Range(Seconds, SecondsMax)}s";
+                string each = Each == null ? string.Empty : $" Each {Each}";
+                string lowering = LowerSeconds > 0 ? $", {LowerSeconds}s Lowering" : string.Empty;
+                return amount + each + lowering;
+            }
+        }
+
+        /// <summary>
+        /// Returns a copy of this move with a week's progression applied.
+        /// </summary>
+        /// <param name="progression">The progression to apply.</param>
+        public Move Progress(WeekProgression progression)
+        {
+            int extraReps = Type == MoveType.Reps ? progression.ExtraReps : 0;
+            return new Move { Name = Name, Type = Type, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, Notes = Notes, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
+        }
+
+        /// <summary>
+        /// Formats a minimum and optional maximum as a range.
+        /// </summary>
+        /// <param name="min">The minimum value.</param>
+        /// <param name="max">The maximum value, if any.</param>
+        private static string Range(int min, int? max)
+        {
+            return max.HasValue ? $"{min}–{max}" : $"{min}";
+        }
+    }
+}

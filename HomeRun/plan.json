@@ -1,0 +1,195 @@
+{
+  "startDate": "2026-11-06",
+  "fasting": {
+    "start": "13:00:00",
+    "end": "21:00:00"
+  },
+  "warmUp": {
+    "minutes": 5,
+    "moves": [
+      "Marching On The Spot",
+      "Arm Circles",
+      "Leg Swings",
+      "Light Squats"
+    ]
+  },
+  "workouts": [
+    {
+      "id": "strength-a",
+      "name": "Strength A",
+      "type": "Strength",
+      "rounds": 3,
+      "restSeconds": 60,
+      "moves": [
+        {
+          "name": "Squats",
+          "type": "Reps",
+          "reps": 15
+        },
+        {
+          "name": "Push-Ups",
+          "type": "Reps",
+          "reps": 10,
+          "notes": "Incline if needed"
+        },
+        {
+          "name": "Reverse Lunges",
+          "type": "Reps",
+          "reps": 10,
+          "each": "Leg"
+        },
+        {
+          "name": "Plank",
+          "type": "Timed",
+          "seconds": 40
+        },
+        {
+          "name": "Glute Bridges",
+          "type": "Reps",
+          "reps": 15
+        }
+      ]
+    },
+    {
+      "id": "strength-b",
+      "name": "Strength B",
+      "type": "Strength",
+      "rounds": 3,
+      "restSeconds": 60,
+      "moves": [
+        {
+          "name": "Split Squats",
+          "type": "Reps",
+          "reps": 10,
+          "each": "Leg",
+          "notes": "Back foot on chair"
+        },
+        {
+          "name": "Chair Dips",
+          "type": "Reps",
+          "reps": 10
+        },
+        {
+          "name": "Wall Sit",
+          "type": "Timed",
+          "seconds": 40
+        },
+        {
+          "name": "Superman Holds",
+          "type": "Reps",
+          "reps": 12
+        },
+        {
+          "name": "Side Plank",
+          "type": "Timed",
+          "seconds": 25,
+          "each": "Side"
+        }
+      ]
+    },
+    {
+      "id": "cardio-circuit",
+      "name": "Cardio Circuit",
+      "type": "Circuit",
+      "rounds": 4,
+      "workSeconds": 40,
+      "offSeconds": 20,
+      "moves": [
+        {
+          "name": "Jumping Jacks",
+          "type": "Interval"
+        },
+        {
+          "name": "Mountain Climbers",
+          "type": "Interval"
+        },
+        {
+          "name": "Squat Jumps",
+          "type": "Interval",
+          "notes": "Or fast bodyweight squats"
+        },
+        {
+          "name": "High Knees",
+          "type": "Interval"
+        },
+        {
+          "name": "Burpees",
+          "type": "Interval",
+          "notes": "Or step-back burpees"
+        }
+      ]
+    },
+    {
+      "id": "brisk-walk",
+      "name": "Brisk Walk",
+      "type": "Tick",
+      "description": "30 min brisk walk",
+      "moves": []
+    },
+    {
+      "id": "brisk-walk-hills",
+      "name": "Brisk Walk",
+      "type": "Tick",
+      "description": "30 min brisk walk, hills or stairs if possible",
+      "moves": []
+    },
+    {
+      "id": "rest",
+      "name": "Rest / Light Stretching",
+      "type": "Tick",
+      "description": "Rest day, light stretching only",
+      "moves": []
+    }
+  ],
+  "schedule": [
+    {
+      "day": "Monday",
+      "workoutId": "strength-a"
+    },
+    {
+      "day": "Tuesday",
+      "workoutId": "brisk-walk"
+    },
+    {
+      "day": "Wednesday",
+      "workoutId": "strength-b"
+    },
+    {
+      "day": "Thursday",
+      "workoutId": "cardio-circuit"
+    },
+    {
+      "day": "Friday",
+      "workoutId": "strength-a"
+    },
+    {
+      "day": "Saturday",
+      "workoutId": "brisk-walk-hills"
+    },
+    {
+      "day": "Sunday",
+      "workoutId": "rest"
+    }
+  ],
+  "progression": [
+    {
+      "week": 1
+    },
+    {
+      "week": 2
+    },
+    {
+      "week": 3,
+      "extraReps": 2,
+      "restSeconds": 45
+    },
+    {
+      "week": 4,
+      "extraReps": 2,
+      "restSeconds": 45,
+      "lowerSeconds": 3,
+      "workSeconds": 45,
+      "offSeconds": 15
+    }
+  ]
+}
