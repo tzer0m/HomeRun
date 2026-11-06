@@ -1,6 +1,9 @@
+using HomeRun.Data;
 using HomeRun.Models;
 using HomeRun.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeRun.Pages
 {
@@ -8,7 +11,8 @@ namespace HomeRun.Pages
     /// Page model for the home page, showing today's checklist.
     /// </summary>
     /// <param name="planService">The plan service.</param>
-    public class IndexModel(PlanService planService) : PageModel
+    /// <param name="db">The database context.</param>
+    public class IndexModel(PlanService planService, AppDbContext db) : PageModel
     {
         /// <summary>
         /// Today's date.
@@ -51,9 +55,39 @@ namespace HomeRun.Pages
         public string RemainingText { get; set; } = string.Empty;
 
         /// <summary>
+        /// Loads today's workout, stretching, fasting state and whether weight is recorded.
+        /// </summary>
+        public async Task OnGetAsync()
+        {
+            LoadToday();
+            WeightRecorded = await db.Weights.AnyAsync(x => x.Date == Today);
+        }
+
+        /// <summary>
+        /// Saves today's weight, replacing any existing entry.
+        /// </summary>
+        /// <param name="weight">The weight in kilograms.</param>
+        public async Task<IActionResult> OnPostAsync(decimal? weight)
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            if (weight is > 0)
+            {
+                WeightEntry? entry = await db.Weights.FirstOrDefaultAsync(x => x.Date == today);
+                if (entry == null)
+                {
+                    entry = new WeightEntry { Date = today };
+                    db.Weights.Add(entry);
+                }
+                entry.Kilograms = weight.Value;
+                await db.SaveChangesAsync();
+            }
+            return RedirectToPage();
+        }
+
+        /// <summary>
         /// Loads today's workout, stretching and fasting state.
         /// </summary>
-        public void OnGet()
+        private void LoadToday()
         {
             DateTime now = DateTime.Now;
             Today = DateOnly.FromDateTime(now);
