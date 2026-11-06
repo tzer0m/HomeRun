@@ -5,7 +5,29 @@
 }
 
 <h1>Schedule</h1>
-<p class="text-muted">Every workout starts with a @Model.WarmUp.Minutes minute warm-up: @string.Join(", ", Model.WarmUp.Moves).</p>
+<div class="card mb-3">
+    <div class="card-header d-flex justify-content-between">
+        <strong>@Model.Stretching.Name</strong>
+        <span class="text-muted">@Model.Stretching.Summary</span>
+    </div>
+    <table class="table table-sm mb-0" style="table-layout: fixed">
+        <thead>
+            <tr>
+                <th class="w-50">Move</th>
+                <th class="w-50">Reps / Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Move move in Model.Stretching.Moves)
+            {
+                <tr>
+                    <td>@move.Name</td>
+                    <td>@move.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <div class="row row-cols-1 row-cols-lg-2 g-3">
     @foreach (ScheduleWeek week in Model.Weeks)
     {

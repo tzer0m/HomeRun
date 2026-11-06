@@ -53,7 +53,7 @@ namespace HomeRun.Models
         /// <summary>
         /// A short description of the rounds and timings.
         /// </summary>
-        public string Summary => Type switch { WorkoutType.Strength => $"{Rounds} Rounds, {RestSeconds}s Rest", WorkoutType.Circuit => $"{Rounds} Rounds, {WorkSeconds}s On / {OffSeconds}s Off", _ => Description };
+        public string Summary => Type switch { WorkoutType.Strength => $"{Rounds} Rounds, {RestSeconds}s Rest", WorkoutType.Circuit => $"{Rounds} Rounds, {WorkSeconds}s On / {OffSeconds}s Off", WorkoutType.Stretch => string.Empty, _ => Description };
 
         /// <summary>
         /// Returns a copy of this workout with a week's progression applied.

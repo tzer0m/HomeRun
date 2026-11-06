@@ -16,9 +16,9 @@ namespace HomeRun.Pages
         public List<ScheduleWeek> Weeks { get; set; } = [];
 
         /// <summary>
-        /// The warm-up done before every session.
+        /// The daily stretching routine.
         /// </summary>
-        public WarmUp WarmUp { get; set; } = new WarmUp();
+        public Workout Stretching { get; set; } = new Workout();
 
         /// <summary>
         /// The current week number.
@@ -31,7 +31,7 @@ namespace HomeRun.Pages
         public void OnGet()
         {
             Weeks = planService.GetSchedule();
-            WarmUp = planService.Plan.WarmUp;
+            Stretching = planService.Plan.Stretching;
             CurrentWeek = planService.GetCurrentWeek(DateOnly.FromDateTime(DateTime.Now));
         }
     }

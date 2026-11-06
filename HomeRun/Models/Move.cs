@@ -16,6 +16,11 @@ namespace HomeRun.Models
         public MoveType Type { get; set; }
 
         /// <summary>
+        /// The number of times the move is repeated back to back.
+        /// </summary>
+        public int Sets { get; set; } = 1;
+
+        /// <summary>
         /// The reps, or the minimum reps when a range is given.
         /// </summary>
         public int Reps { get; set; }
@@ -53,6 +58,10 @@ namespace HomeRun.Models
             get
             {
                 string amount = Type switch { MoveType.Reps => Range(Reps, RepsMax) + EachText, MoveType.Timed => $"{Range(Seconds, SecondsMax)}s" + EachText, _ => string.Empty };
+                if (Sets > 1 && amount.Length > 0)
+                {
+                    amount = $"{Sets} × {amount}";
+                }
                 return LowerSeconds > 0 ? $"{amount}, {LowerSeconds}s Lowering" : amount;
             }
         }
@@ -69,7 +78,7 @@ namespace HomeRun.Models
         public Move Progress(WeekProgression progression)
         {
             int extraReps = Type == MoveType.Reps ? progression.ExtraReps : 0;
-            return new Move { Name = Name, Type = Type, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
+            return new Move { Name = Name, Type = Type, Sets = Sets, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
         }
 
         /// <summary>

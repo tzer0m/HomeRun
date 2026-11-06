@@ -16,9 +16,9 @@ namespace HomeRun.Models
         public FastingWindow Fasting { get; set; } = new FastingWindow();
 
         /// <summary>
-        /// The warm-up done before every session.
+        /// The daily stretching routine.
         /// </summary>
-        public WarmUp WarmUp { get; set; } = new WarmUp();
+        public Workout Stretching { get; set; } = new Workout();
 
         /// <summary>
         /// All available workouts.

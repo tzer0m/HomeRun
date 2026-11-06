@@ -16,6 +16,10 @@ namespace HomeRun.Models
         /// <summary>
         /// A checklist tick only, such as a walk or rest day.
         /// </summary>
-        Tick
+        Tick,
+        /// <summary>
+        /// Rounds of timed stretch holds.
+        /// </summary>
+        Stretch
     }
 }
