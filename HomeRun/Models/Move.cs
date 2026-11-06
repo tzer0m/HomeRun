@@ -11,6 +11,11 @@ namespace HomeRun.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// A short description of how to do the move.
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
         /// Whether the move is rep based, held or interval based.
         /// </summary>
         public MoveType Type { get; set; }
@@ -78,7 +83,7 @@ namespace HomeRun.Models
         public Move Progress(WeekProgression progression)
         {
             int extraReps = Type == MoveType.Reps ? progression.ExtraReps : 0;
-            return new Move { Name = Name, Type = Type, Sets = Sets, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
+            return new Move { Name = Name, Description = Description, Type = Type, Sets = Sets, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
         }
 
         /// <summary>

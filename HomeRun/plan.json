@@ -11,6 +11,7 @@
     "moves": [
       {
         "name": "Lizard Lunge",
+        "description": "Low lunge with both hands inside the front foot and the back leg straight.",
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
@@ -18,6 +19,7 @@
       },
       {
         "name": "Lunge With Reach",
+        "description": "From the lizard lunge, rotate and reach the arm on the front-leg side to the sky.",
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
@@ -25,6 +27,7 @@
       },
       {
         "name": "Half Splits",
+        "description": "From the lunge, shift hips back, straighten the front leg and fold over it.",
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
@@ -32,46 +35,54 @@
       },
       {
         "name": "90/90 Hip Stretch",
+        "description": "Sit with both knees bent at 90 degrees, one leg in front and one to the side, and lean over the front shin.",
         "type": "Timed",
         "seconds": 30,
         "each": "Side"
       },
       {
         "name": "Plank",
+        "description": "Forearms on the floor, body in a straight line from head to heels, and hold.",
         "type": "Timed",
         "seconds": 60
       },
       {
         "name": "Side Plank",
+        "description": "On one forearm with hips lifted so the body is in a straight line, and hold.",
         "type": "Timed",
         "seconds": 30,
         "each": "Side"
       },
       {
         "name": "Superman Hold",
+        "description": "Face down, lift arms, chest and legs off the floor, and hold.",
         "type": "Timed",
         "seconds": 15,
         "each": "Side"
       },
       {
         "name": "Single-Arm Single-Leg Superman",
+        "description": "Face down, reach one arm forward and hold the opposite leg lifted behind you.",
         "type": "Timed",
         "seconds": 15,
         "each": "Side"
       },
       {
         "name": "Seated Straddle Toe Touch",
+        "description": "Sit with legs apart at 90 degrees and reach towards the toes of one foot.",
         "type": "Timed",
         "seconds": 20,
         "each": "Side"
       },
       {
         "name": "Butterfly Stretch",
+        "description": "Sit with the soles of both feet together, knees out, and lean forward.",
         "type": "Timed",
         "seconds": 30
       },
       {
         "name": "Supine Spinal Twist",
+        "description": "On your back with arms out, drop both knees to one side and look the other way.",
         "type": "Timed",
         "seconds": 30,
         "each": "Side"
@@ -88,28 +99,33 @@
       "moves": [
         {
           "name": "Squats",
+          "description": "Feet shoulder-width apart, sit hips back and down with chest up, then stand.",
           "type": "Reps",
           "reps": 15
         },
         {
           "name": "Push-Ups",
+          "description": "Hands under shoulders, body straight, lower chest to the floor and press back up.",
           "type": "Reps",
           "reps": 10
         },
         {
           "name": "Reverse Lunges",
+          "description": "Step one foot back, lower the back knee towards the floor, then drive back to standing.",
           "type": "Reps",
           "reps": 10,
           "each": "Leg"
         },
         {
           "name": "Dead Bugs",
+          "description": "On your back with arms up and knees bent, lower the opposite arm and leg slowly, keeping your back flat.",
           "type": "Reps",
           "reps": 10,
           "each": "Side"
         },
         {
           "name": "Glute Bridges",
+          "description": "On your back with knees bent, drive hips up, squeeze glutes, then lower.",
           "type": "Reps",
           "reps": 15
         }
@@ -124,28 +140,33 @@
       "moves": [
         {
           "name": "Split Squats",
+          "description": "Back foot on a chair, lower the back knee towards the floor, then stand.",
           "type": "Reps",
           "reps": 10,
           "each": "Leg"
         },
         {
           "name": "Chair Dips",
+          "description": "Hands on a chair behind you, bend elbows to lower hips, then press back up.",
           "type": "Reps",
           "reps": 10
         },
         {
           "name": "Wall Sit",
+          "description": "Back against a wall, thighs parallel to the floor, and hold.",
           "type": "Timed",
           "seconds": 40
         },
         {
           "name": "Single-Leg Glute Bridges",
+          "description": "Glute bridge with one leg extended, driving up through the planted foot.",
           "type": "Reps",
           "reps": 10,
           "each": "Leg"
         },
         {
           "name": "Pike Push-Ups",
+          "description": "Hips high in an inverted V, bend elbows to lower your head towards the floor, then press up.",
           "type": "Reps",
           "reps": 8
         }
@@ -161,22 +182,27 @@
       "moves": [
         {
           "name": "Jumping Jacks",
+          "description": "Jump feet wide while raising arms overhead, then jump back together.",
           "type": "Interval"
         },
         {
           "name": "Mountain Climbers",
+          "description": "In a high plank, drive knees to the chest alternately and quickly.",
           "type": "Interval"
         },
         {
           "name": "Squat Jumps",
+          "description": "Squat down, then jump up and land softly.",
           "type": "Interval"
         },
         {
           "name": "High Knees",
+          "description": "Run on the spot, driving knees up to hip height.",
           "type": "Interval"
         },
         {
           "name": "Burpees",
+          "description": "Squat, kick feet back to a plank, jump feet in, then jump up.",
           "type": "Interval"
         }
       ]
