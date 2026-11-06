@@ -50,7 +50,7 @@
                     <tbody>
                         @foreach (ScheduleEntry entry in week.Days)
                         {
-                            <tr class="table-secondary">
+                            <tr class="table-day">
                                 <th colspan="2">@entry.Day - @(entry.Workout?.Name ?? "Rest Day")<span class="float-end fw-normal">@entry.Workout?.Summary</span></th>
                             </tr>
                             @if (entry.Workout != null)
