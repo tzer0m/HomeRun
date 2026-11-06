@@ -28,13 +28,13 @@ namespace HomeRun.Services
         public Plan Plan => Data;
 
         /// <summary>
-        /// Returns the current week number, clamped to the weeks in the progression.
+        /// Returns the current week number, 0 before the start date, and no higher than the last week in the progression.
         /// </summary>
         /// <param name="today">Today's date.</param>
         public int GetCurrentWeek(DateOnly today)
         {
-            int week = ((today.DayNumber - Data.StartDate.DayNumber) / 7) + 1;
-            return Math.Clamp(week, 1, Data.Progression.Count);
+            int days = today.DayNumber - Data.StartDate.DayNumber;
+            return days < 0 ? 0 : Math.Min((days / 7) + 1, Data.Progression.Count);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace HomeRun.Services
         /// <param name="date">The date to look up.</param>
         public Workout? GetWorkout(DateOnly date)
         {
-            int week = GetCurrentWeek(date);
+            int week = Math.Max(GetCurrentWeek(date), 1);
             WeekProgression progression = Data.Progression.First(x => x.Week == week);
             ScheduleDay? day = Data.Schedule.FirstOrDefault(x => x.Day == date.DayOfWeek);
             Workout? workout = Data.Workouts.FirstOrDefault(x => x.Id == day?.WorkoutId);
