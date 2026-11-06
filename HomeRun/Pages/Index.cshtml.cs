@@ -45,6 +45,11 @@ namespace HomeRun.Pages
         public bool WeightRecorded => Weight.HasValue;
 
         /// <summary>
+        /// Today's checklist rows after weighing in.
+        /// </summary>
+        public List<ChecklistItem> Items { get; set; } = [];
+
+        /// <summary>
         /// Whether the eating window is currently open.
         /// </summary>
         public bool Eating { get; set; }
@@ -67,6 +72,12 @@ namespace HomeRun.Pages
             LoadToday();
             WeightEntry? entry = await db.Weights.FirstOrDefaultAsync(x => x.Date == Today);
             Weight = entry?.Kilograms;
+            HashSet<string> done = (await db.Checklist.Where(x => x.Date == Today).Select(x => x.Item).ToListAsync()).ToHashSet();
+            Items.Add(new ChecklistItem { Id = Stretching.Id, Name = Stretching.Name, Done = done.Contains(Stretching.Id), HasSession = true });
+            if (Workout != null)
+            {
+                Items.Add(new ChecklistItem { Id = Workout.Id, Name = Workout.Name, Done = done.Contains(Workout.Id), HasSession = Workout.Type != WorkoutType.Tick });
+            }
         }
 
         /// <summary>
@@ -85,6 +96,30 @@ namespace HomeRun.Pages
                     db.Weights.Add(entry);
                 }
                 entry.Kilograms = weight.Value;
+                await db.SaveChangesAsync();
+            }
+            return RedirectToPage();
+        }
+
+        /// <summary>
+        /// Ticks an item off for today, or unticks it if already ticked.
+        /// </summary>
+        /// <param name="item">The ID of the stretching routine or today's workout.</param>
+        public async Task<IActionResult> OnPostTickAsync(string item)
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            string? workoutId = planService.GetWorkout(today)?.Id;
+            if (item == planService.Plan.Stretching.Id || item == workoutId)
+            {
+                ChecklistEntry? entry = await db.Checklist.FirstOrDefaultAsync(x => x.Date == today && x.Item == item);
+                if (entry == null)
+                {
+                    db.Checklist.Add(new ChecklistEntry { Date = today, Item = item });
+                }
+                else
+                {
+                    db.Checklist.Remove(entry);
+                }
                 await db.SaveChangesAsync();
             }
             return RedirectToPage();

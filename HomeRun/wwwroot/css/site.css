@@ -28,3 +28,13 @@ html {
 .checklist .list-group-item {
   min-height: 3.5rem;
 }
+
+.checklist .form-check-input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+}
+
+.checklist .btn {
+  width: 5rem;
+}

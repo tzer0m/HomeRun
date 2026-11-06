@@ -18,40 +18,37 @@
     </div>
 </div>
 <ul class="list-group checklist">
-    @if (Model.WeightRecorded)
-    {
-        <li class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">
-            <span>Weigh In</span>
-            <span>@Model.Weight?.ToString("0.0") kg</span>
-        </li>
-    }
-    else
-    {
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>Weigh In</span>
-            <form class="d-flex gap-2" method="post">
-                <input class="form-control" style="width: 6rem" type="number" name="weight" step="0.1" min="0" placeholder="kg" aria-label="Weight (kg)" />
-                <button class="btn btn-primary" type="submit">Save</button>
-            </form>
-        </li>
-    }
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>@Model.Stretching.Name</span>
-        <a class="btn btn-primary" href="/session/@Model.Stretching.Id">Start</a>
-    </li>
-    @if (Model.Workout != null)
-    {
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            @if (Model.Workout.Type == WorkoutType.Tick)
+    <li class="list-group-item @(Model.WeightRecorded ? "list-group-item-success" : "") d-flex justify-content-between align-items-center">
+        <span>Weigh In</span>
+        <div class="d-flex align-items-center gap-3">
+            @if (Model.WeightRecorded)
             {
-                <label class="flex-grow-1" for="workout-done">@Model.Workout.Name</label>
-                <input class="form-check-input" type="checkbox" id="workout-done" />
+                <span>@Model.Weight?.ToString("0.0") kg</span>
             }
             else
             {
-                <span>@Model.Workout.Name</span>
-                <a class="btn btn-primary" href="/session/@Model.Workout.Id">Start</a>
+                <form class="d-flex gap-2" method="post">
+                    <input class="form-control" style="width: 6rem" type="number" name="weight" step="0.1" min="0" placeholder="kg" aria-label="Weight (kg)" />
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </form>
             }
+            <input class="form-check-input" type="checkbox" checked="@Model.WeightRecorded" disabled aria-label="Weigh In Done" />
+        </div>
+    </li>
+    @foreach (ChecklistItem item in Model.Items)
+    {
+        <li class="list-group-item @(item.Done ? "list-group-item-success" : "") d-flex justify-content-between align-items-center">
+            <span>@item.Name</span>
+            <div class="d-flex align-items-center gap-3">
+                @if (item.HasSession && !item.Done)
+                {
+                    <a class="btn btn-primary" href="/session/@item.Id">Start</a>
+                }
+                <form method="post" asp-page-handler="Tick">
+                    <input type="hidden" name="item" value="@item.Id" />
+                    <input class="form-check-input" type="checkbox" checked="@item.Done" onchange="this.form.submit()" aria-label="@item.Name Done" />
+                </form>
+            </div>
         </li>
     }
 </ul>

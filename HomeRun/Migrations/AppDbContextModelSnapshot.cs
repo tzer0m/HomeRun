@@ -22,6 +22,29 @@ namespace HomeRun.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("HomeRun.Models.ChecklistEntry", b =>
+                {
+                    b.Property<int>("ChecklistEntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ChecklistEntryId"));
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Item")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ChecklistEntryId");
+
+                    b.HasIndex("Date", "Item")
+                        .IsUnique();
+
+                    b.ToTable("Checklist");
+                });
+
             modelBuilder.Entity("HomeRun.Models.WeightEntry", b =>
                 {
                     b.Property<int>("WeightEntryId")
