@@ -10,23 +10,7 @@
         <strong>@Model.Stretching.Name</strong>
         <span class="text-muted">@Model.Stretching.Summary</span>
     </div>
-    <table class="table table-sm mb-0" style="table-layout: fixed">
-        <thead>
-            <tr>
-                <th class="w-50">Move</th>
-                <th class="w-50">Reps / Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Move move in Model.Stretching.Moves)
-            {
-                <tr>
-                    <td title="@move.Description">@move.Name</td>
-                    <td>@move.Amount</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <partial name="_MoveTable" model="Model.Stretching" />
 </div>
 <div class="row row-cols-1 row-cols-lg-2 g-3">
     @foreach (ScheduleWeek week in Model.Weeks)

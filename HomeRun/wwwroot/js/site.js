@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+function pad(value) {
+  return String(value).padStart(2, "0");
+}
 
-// Write your JavaScript code.
+const countdown = document.getElementById("countdown");
+if (countdown) {
+  const target = new Date(countdown.dataset.target).getTime();
+  const timer = setInterval(() => {
+    const left = Math.floor((target - Date.now()) / 1000);
+    if (left <= 0) {
+      clearInterval(timer);
+      setTimeout(() => location.reload(), 2000);
+      return;
+    }
+    countdown.textContent = `${pad(Math.floor(left / 3600))}:${pad(Math.floor((left % 3600) / 60))}:${pad(left % 60)}`;
+  }, 1000);
+}

@@ -38,6 +38,19 @@ namespace HomeRun.Services
         }
 
         /// <summary>
+        /// Returns the progressed workout scheduled for a date, or null if nothing is scheduled.
+        /// </summary>
+        /// <param name="date">The date to look up.</param>
+        public Workout? GetWorkout(DateOnly date)
+        {
+            int week = GetCurrentWeek(date);
+            WeekProgression progression = Data.Progression.First(x => x.Week == week);
+            ScheduleDay? day = Data.Schedule.FirstOrDefault(x => x.Day == date.DayOfWeek);
+            Workout? workout = Data.Workouts.FirstOrDefault(x => x.Id == day?.WorkoutId);
+            return workout?.Progress(progression);
+        }
+
+        /// <summary>
         /// Builds every week of the schedule with its progression applied.
         /// </summary>
         public List<ScheduleWeek> GetSchedule()

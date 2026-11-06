@@ -1,0 +1,18 @@
+﻿@model Workout
+<table class="table table-sm mb-0" style="table-layout: fixed">
+    <thead>
+        <tr>
+            <th class="w-50">Move</th>
+            <th class="w-50">Reps / Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Move move in Model.Moves)
+        {
+            <tr>
+                <td title="@move.Description">@move.Name</td>
+                <td>@(move.Type == MoveType.Interval ? Model.WorkSeconds + "s" : move.Amount)</td>
+            </tr>
+        }
+    </tbody>
+</table>
