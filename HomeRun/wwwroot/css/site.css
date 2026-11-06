@@ -24,3 +24,7 @@ html {
 .table-day {
   --bs-table-bg: var(--bs-secondary-bg);
 }
+
+.checklist .list-group-item {
+  min-height: 3.5rem;
+}

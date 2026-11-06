@@ -35,9 +35,14 @@ namespace HomeRun.Pages
         public Workout Stretching { get; set; } = new Workout();
 
         /// <summary>
+        /// Today's recorded weight in kilograms, or null if not recorded yet.
+        /// </summary>
+        public decimal? Weight { get; set; }
+
+        /// <summary>
         /// Whether today's weight has already been recorded.
         /// </summary>
-        public bool WeightRecorded { get; set; }
+        public bool WeightRecorded => Weight.HasValue;
 
         /// <summary>
         /// Whether the eating window is currently open.
@@ -60,7 +65,8 @@ namespace HomeRun.Pages
         public async Task OnGetAsync()
         {
             LoadToday();
-            WeightRecorded = await db.Weights.AnyAsync(x => x.Date == Today);
+            WeightEntry? entry = await db.Weights.FirstOrDefaultAsync(x => x.Date == Today);
+            Weight = entry?.Kilograms;
         }
 
         /// <summary>
