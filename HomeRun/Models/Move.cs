@@ -41,32 +41,26 @@ namespace HomeRun.Models
         public string? Each { get; set; }
 
         /// <summary>
-        /// Optional tips or easier variations.
-        /// </summary>
-        public string? Notes { get; set; }
-
-        /// <summary>
         /// The slow lowering time in seconds, or 0 for normal tempo.
         /// </summary>
         public int LowerSeconds { get; set; }
 
         /// <summary>
-        /// A short description of the reps or hold time.
+        /// The reps or hold time for display, including any slow lowering.
         /// </summary>
-        public string Summary
+        public string Amount
         {
             get
             {
-                if (Type == MoveType.Interval)
-                {
-                    return string.Empty;
-                }
-                string amount = Type == MoveType.Reps ? $"{Range(Reps, RepsMax)} Reps" : $"{Range(Seconds, SecondsMax)}s";
-                string each = Each == null ? string.Empty : $" Each {Each}";
-                string lowering = LowerSeconds > 0 ? $", {LowerSeconds}s Lowering" : string.Empty;
-                return amount + each + lowering;
+                string amount = Type switch { MoveType.Reps => Range(Reps, RepsMax) + EachText, MoveType.Timed => $"{Range(Seconds, SecondsMax)}s" + EachText, _ => string.Empty };
+                return LowerSeconds > 0 ? $"{amount}, {LowerSeconds}s Lowering" : amount;
             }
         }
+
+        /// <summary>
+        /// The each leg or side label for display, or empty if not per side.
+        /// </summary>
+        private string EachText => Each == null ? string.Empty : $" Each {Each}";
 
         /// <summary>
         /// Returns a copy of this move with a week's progression applied.
@@ -75,7 +69,7 @@ namespace HomeRun.Models
         public Move Progress(WeekProgression progression)
         {
             int extraReps = Type == MoveType.Reps ? progression.ExtraReps : 0;
-            return new Move { Name = Name, Type = Type, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, Notes = Notes, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
+            return new Move { Name = Name, Type = Type, Reps = Reps + extraReps, RepsMax = RepsMax + extraReps, Seconds = Seconds, SecondsMax = SecondsMax, Each = Each, LowerSeconds = Type == MoveType.Reps ? progression.LowerSeconds : 0 };
         }
 
         /// <summary>

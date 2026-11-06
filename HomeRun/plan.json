@@ -29,8 +29,7 @@
         {
           "name": "Push-Ups",
           "type": "Reps",
-          "reps": 10,
-          "notes": "Incline if needed"
+          "reps": 10
         },
         {
           "name": "Reverse Lunges",
@@ -61,8 +60,7 @@
           "name": "Split Squats",
           "type": "Reps",
           "reps": 10,
-          "each": "Leg",
-          "notes": "Back foot on chair"
+          "each": "Leg"
         },
         {
           "name": "Chair Dips",
@@ -105,8 +103,7 @@
         },
         {
           "name": "Squat Jumps",
-          "type": "Interval",
-          "notes": "Or fast bodyweight squats"
+          "type": "Interval"
         },
         {
           "name": "High Knees",
@@ -114,30 +111,29 @@
         },
         {
           "name": "Burpees",
-          "type": "Interval",
-          "notes": "Or step-back burpees"
+          "type": "Interval"
         }
       ]
     },
     {
-      "id": "brisk-walk",
-      "name": "Brisk Walk",
+      "id": "walk",
+      "name": "Walk",
       "type": "Tick",
-      "description": "30 min brisk walk",
+      "description": "30 min",
       "moves": []
     },
     {
-      "id": "brisk-walk-hills",
-      "name": "Brisk Walk",
+      "id": "walk-hills",
+      "name": "Walk",
       "type": "Tick",
-      "description": "30 min brisk walk, hills or stairs if possible",
+      "description": "30 min, hills or stairs",
       "moves": []
     },
     {
       "id": "rest",
-      "name": "Rest / Light Stretching",
+      "name": "Rest",
       "type": "Tick",
-      "description": "Rest day, light stretching only",
+      "description": "Light stretching",
       "moves": []
     }
   ],
@@ -148,7 +144,7 @@
     },
     {
       "day": "Tuesday",
-      "workoutId": "brisk-walk"
+      "workoutId": "walk"
     },
     {
       "day": "Wednesday",
@@ -164,7 +160,7 @@
     },
     {
       "day": "Saturday",
-      "workoutId": "brisk-walk-hills"
+      "workoutId": "walk-hills"
     },
     {
       "day": "Sunday",

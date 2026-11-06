@@ -6,34 +6,45 @@
 
 <h1>Schedule</h1>
 <p class="text-muted">Every workout starts with a @Model.WarmUp.Minutes minute warm-up: @string.Join(", ", Model.WarmUp.Moves).</p>
-@foreach (ScheduleWeek week in Model.Weeks)
-{
-    <div class="card mb-3 @(week.Number == Model.CurrentWeek ? "border-primary" : "")">
-        <div class="card-header d-flex justify-content-between">
-            <strong>Week @week.Number</strong>
-            @if (week.Number == Model.CurrentWeek)
-            {
-                <span class="badge bg-primary">Current</span>
-            }
-        </div>
-        <ul class="list-group list-group-flush">
-            @foreach (ScheduleEntry entry in week.Days)
-            {
-                <li class="list-group-item">
-                    <div class="d-flex justify-content-between">
-                        <strong>@entry.Day</strong>
-                        <span>@(entry.Workout?.Name ?? "Rest Day")</span>
-                    </div>
-                    @if (entry.Workout != null)
+<div class="row row-cols-1 row-cols-lg-2 g-3">
+    @foreach (ScheduleWeek week in Model.Weeks)
+    {
+        <div class="col">
+            <div class="card h-100 @(week.Number == Model.CurrentWeek ? "border-primary" : "")">
+                <div class="card-header d-flex justify-content-between">
+                    <strong>Week @week.Number</strong>
+                    @if (week.Number == Model.CurrentWeek)
                     {
-                        <div class="small">@entry.Workout.Summary</div>
-                        @foreach (Move move in entry.Workout.Moves)
-                        {
-                            <div class="small text-muted">@move.Name@(move.Summary.Length > 0 ? " - " + move.Summary : "")@(move.Notes != null ? " (" + move.Notes + ")" : "")</div>
-                        }
+                        <span class="badge bg-primary">Current</span>
                     }
-                </li>
-            }
-        </ul>
-    </div>
-}
+                </div>
+                <table class="table table-sm mb-0" style="table-layout: fixed">
+                    <thead>
+                        <tr>
+                            <th class="w-50">Move</th>
+                            <th class="w-50">Reps / Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ScheduleEntry entry in week.Days)
+                        {
+                            <tr class="table-secondary">
+                                <th colspan="2">@entry.Day - @(entry.Workout?.Name ?? "Rest Day")<span class="float-end fw-normal">@entry.Workout?.Summary</span></th>
+                            </tr>
+                            @if (entry.Workout != null)
+                            {
+                                @foreach (Move move in entry.Workout.Moves)
+                                {
+                                    <tr>
+                                        <td>@move.Name</td>
+                                        <td>@(move.Type == MoveType.Interval ? entry.Workout.WorkSeconds + "s" : move.Amount)</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
