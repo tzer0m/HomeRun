@@ -103,18 +103,6 @@ namespace HomeRun.Models
                 }
                 result.Add(step);
             }
-            string next = string.Empty;
-            for (int i = result.Count - 1; i >= 0; i--)
-            {
-                if (result[i].Kind == StepKind.Work)
-                {
-                    next = $"{result[i].Title} - {result[i].Detail}";
-                }
-                else
-                {
-                    result[i].Next = next;
-                }
-            }
             return result;
         }
 

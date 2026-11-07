@@ -13,16 +13,24 @@
     <div class="progress">
         <div id="progress" class="progress-bar" style="width: 0%"></div>
     </div>
-    <div id="round" class="text-muted"></div>
-    <h1 id="title" class="fs-3"></h1>
-    <p id="detail" class="fs-4"></p>
-    <p id="description" class="text-muted"></p>
-    <div id="step-countdown" class="display-4"></div>
-    <div class="d-flex justify-content-center gap-3">
-        <button id="action-button" class="btn btn-secondary btn-lg" type="button">Pause</button>
-        <button id="skip-button" class="btn btn-outline-secondary btn-lg" type="button">Skip</button>
+    <div class="runner-round"><span id="round" class="badge rounded-pill text-bg-secondary"></span></div>
+    <h1 id="title" class="fs-3 fw-semibold"></h1>
+    <div class="ring-wrap">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-track" cx="60" cy="60" r="54"></circle>
+            <circle id="ring" class="ring" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"></circle>
+        </svg>
+        <div id="step-countdown"></div>
     </div>
-    <p id="next" class="text-muted"></p>
+    <p id="description" class="text-muted"></p>
+    <div class="d-flex gap-2">
+        <button id="action-button" class="btn btn-secondary btn-lg flex-fill" type="button">Pause</button>
+        <button id="skip-button" class="btn btn-outline-secondary btn-lg flex-fill" type="button">Skip</button>
+    </div>
+    <div class="upcoming text-start">
+        <div class="small text-uppercase text-muted">Routine</div>
+        <ul id="upcoming" class="list-unstyled m-0"></ul>
+    </div>
 </div>
 <div id="complete" class="text-center d-none">
     <h1>Complete</h1>

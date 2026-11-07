@@ -34,10 +34,5 @@ namespace HomeRun.Models
         /// The round and set text, such as Round 2 of 3.
         /// </summary>
         public string Round { get; set; } = string.Empty;
-
-        /// <summary>
-        /// The next move, shown during rests and get ready steps.
-        /// </summary>
-        public string Next { get; set; } = string.Empty;
     }
 }

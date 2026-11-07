@@ -6,6 +6,8 @@ if (stepsElement) {
   let index = -1;
   let endTime = 0;
   let remaining = 0;
+  let total = 0;
+  let items = null;
   let paused = false;
   let timer = null;
   let lastBeep = 0;
@@ -67,6 +69,34 @@ if (stepsElement) {
     }
   }
 
+  function buildUpcoming() {
+    const list = get("upcoming");
+    items = [];
+    steps.forEach((x, i) => {
+      if (x.kind === "ready") {
+        return;
+      }
+      const item = document.createElement("li");
+      item.textContent = x.detail ? `${x.title} - ${x.detail}` : x.title;
+      list.appendChild(item);
+      items.push({ item, step: i });
+    });
+  }
+
+  function showUpcoming() {
+    if (!items) {
+      buildUpcoming();
+    }
+    const current = items.findIndex((x) => x.step >= index);
+    items.forEach((x, n) => {
+      x.item.classList.toggle("done", n < current);
+      x.item.classList.toggle("current", n === current);
+    });
+    if (current >= 0) {
+      get("upcoming").scrollTop = items[Math.max(current - 2, 0)].item.offsetTop;
+    }
+  }
+
   function goTo(next) {
     clearInterval(timer);
     index = next;
@@ -78,21 +108,25 @@ if (stepsElement) {
     paused = false;
     get("progress").style.width = `${(index / steps.length) * 100}%`;
     get("round").textContent = step.round;
+    get("round").style.visibility = step.round ? "visible" : "hidden";
     get("title").textContent = step.title;
-    get("title").className = step.kind === "work" ? "fs-3" : "fs-3 text-info";
-    get("detail").textContent = step.detail;
+    get("title").className = step.kind === "work" ? "fs-3 fw-semibold" : "fs-3 fw-semibold text-info";
+    get("run").classList.toggle("ready", step.kind === "ready");
+    get("ring").style.strokeDashoffset = 0;
     get("description").textContent = step.description;
-    get("next").textContent = step.next ? `Next: ${step.next}` : "";
+    showUpcoming();
     const timed = step.seconds > 0;
     get("action-button").textContent = timed ? "Pause" : "Done";
-    get("step-countdown").textContent = timed ? format(step.seconds) : "";
+    get("step-countdown").textContent = timed ? format(step.seconds) : step.detail;
+    get("step-countdown").classList.toggle("is-text", !timed);
     if (step.kind === "work") {
       speak(timed ? step.title : `${step.title}. ${spokenDetail(step.detail)}`);
     } else if (step.kind === "rest") {
       speak("Rest");
     }
     if (timed) {
-      remaining = step.seconds * 1000;
+      total = step.seconds * 1000;
+      remaining = total;
       endTime = Date.now() + remaining;
       lastBeep = 0;
       timer = setInterval(tick, 100);
@@ -106,6 +140,7 @@ if (stepsElement) {
     const left = Math.max(0, endTime - Date.now());
     const seconds = Math.ceil(left / 1000);
     get("step-countdown").textContent = format(seconds);
+    get("ring").style.strokeDashoffset = 339.3 * (1 - left / total);
     if (seconds === 1 && seconds !== lastBeep) {
       lastBeep = seconds;
       beep(880, 120);
