@@ -51,6 +51,22 @@ namespace HomeRun.Services
         }
 
         /// <summary>
+        /// Returns a workout by ID with the current week's progression applied, or the stretching routine, or null if not found.
+        /// </summary>
+        /// <param name="id">The workout or stretching ID.</param>
+        /// <param name="date">The date used to work out the week.</param>
+        public Workout? GetWorkoutById(string id, DateOnly date)
+        {
+            if (id == Data.Stretching.Id)
+            {
+                return Data.Stretching;
+            }
+            int week = Math.Max(GetCurrentWeek(date), 1);
+            WeekProgression progression = Data.Progression.First(x => x.Week == week);
+            return Data.Workouts.FirstOrDefault(x => x.Id == id)?.Progress(progression);
+        }
+
+        /// <summary>
         /// Builds every week of the schedule with its progression applied.
         /// </summary>
         public List<ScheduleWeek> GetSchedule()

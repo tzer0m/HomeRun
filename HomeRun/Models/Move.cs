@@ -87,6 +87,33 @@ namespace HomeRun.Models
         }
 
         /// <summary>
+        /// Builds the session steps for this move.
+        /// </summary>
+        /// <param name="round">The round text, or empty if there are no rounds.</param>
+        public List<SessionStep> ToSteps(string round)
+        {
+            List<SessionStep> steps = [];
+            string lowering = LowerSeconds > 0 ? $", {LowerSeconds}s Lowering" : string.Empty;
+            string[] sides = Each == null ? [string.Empty] : ["Left", "Right"];
+            for (int set = 1; set <= Math.Max(Sets, 1); set++)
+            {
+                string setText = Sets > 1 ? $"Set {set} of {Sets}" : string.Empty;
+                string progress = string.Join(" · ", new[] { round, setText }.Where(x => x.Length > 0));
+                if (Type == MoveType.Reps)
+                {
+                    steps.Add(new SessionStep { Kind = StepKind.Work, Title = Name, Detail = $"{Range(Reps, RepsMax)} Reps{EachText}{lowering}", Description = Description, Round = progress });
+                    continue;
+                }
+                foreach (string side in sides)
+                {
+                    string title = side.Length == 0 ? Name : $"{Name} - {side} {Each}";
+                    steps.Add(new SessionStep { Kind = StepKind.Work, Title = title, Detail = $"{Seconds}s", Description = Description, Seconds = Seconds, Round = progress });
+                }
+            }
+            return steps;
+        }
+
+        /// <summary>
         /// Formats a minimum and optional maximum as a range.
         /// </summary>
         /// <param name="min">The minimum value.</param>

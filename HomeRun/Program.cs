@@ -9,6 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddHealthChecks();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.Configure<PlanOptions>(builder.Configuration.GetSection("Plan"));
+builder.Services.Configure<RunnerOptions>(builder.Configuration.GetSection("Runner"));
 builder.Services.AddSingleton<PlanService>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 

@@ -56,6 +56,76 @@ namespace HomeRun.Models
         public string Summary => Type switch { WorkoutType.Strength => $"{Rounds} Rounds, {RestSeconds}s Rest", WorkoutType.Circuit => $"{Rounds} Rounds, {WorkSeconds}s On / {OffSeconds}s Off", WorkoutType.Stretch => string.Empty, _ => Description };
 
         /// <summary>
+        /// Builds the steps for running this workout, including rests and get ready countdowns.
+        /// </summary>
+        /// <param name="transitionSeconds">The get ready countdown length in seconds.</param>
+        public List<SessionStep> BuildSteps(int transitionSeconds)
+        {
+            List<SessionStep> steps = [];
+            int rounds = Math.Max(Rounds, 1);
+            for (int round = 1; round <= rounds; round++)
+            {
+                string roundText = Type == WorkoutType.Stretch || rounds == 1 ? string.Empty : $"Round {round} of {rounds}";
+                foreach (Move move in Moves)
+                {
+                    if (Type == WorkoutType.Circuit)
+                    {
+                        steps.Add(new SessionStep { Kind = StepKind.Work, Title = move.Name, Detail = $"{WorkSeconds}s", Description = move.Description, Seconds = WorkSeconds, Round = roundText });
+                        if (OffSeconds > 0)
+                        {
+                            steps.Add(RestStep(OffSeconds, roundText));
+                        }
+                    }
+                    else
+                    {
+                        steps.AddRange(move.ToSteps(roundText));
+                    }
+                }
+                if (Type == WorkoutType.Strength && RestSeconds > 0)
+                {
+                    steps.Add(RestStep(RestSeconds, roundText));
+                }
+            }
+            while (steps.Count > 0 && steps[^1].Kind == StepKind.Rest)
+            {
+                steps.RemoveAt(steps.Count - 1);
+            }
+            List<SessionStep> result = [];
+            foreach (SessionStep step in steps)
+            {
+                bool previousIsRest = result.Count > 0 && result[^1].Kind == StepKind.Rest;
+                if (transitionSeconds > 0 && step.Kind == StepKind.Work && step.Seconds > 0 && !previousIsRest)
+                {
+                    result.Add(new SessionStep { Kind = StepKind.Ready, Title = "Get Ready", Seconds = transitionSeconds });
+                }
+                result.Add(step);
+            }
+            string next = string.Empty;
+            for (int i = result.Count - 1; i >= 0; i--)
+            {
+                if (result[i].Kind == StepKind.Work)
+                {
+                    next = $"{result[i].Title} - {result[i].Detail}";
+                }
+                else
+                {
+                    result[i].Next = next;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a rest step.
+        /// </summary>
+        /// <param name="seconds">The rest length in seconds.</param>
+        /// <param name="round">The round text.</param>
+        private static SessionStep RestStep(int seconds, string round)
+        {
+            return new SessionStep { Kind = StepKind.Rest, Title = "Rest", Detail = $"{seconds}s", Seconds = seconds, Round = round };
+        }
+
+        /// <summary>
         /// Returns a copy of this workout with a week's progression applied.
         /// </summary>
         /// <param name="progression">The progression to apply.</param>
