@@ -38,3 +38,18 @@ html {
 .checklist .btn {
   width: 5rem;
 }
+
+.runner {
+  display: grid;
+  grid-template-rows: 1rem 1.5rem 4.5rem 2rem 3rem 4.5rem 3rem 1.5rem;
+  row-gap: 0.25rem;
+}
+
+.runner p, .runner h1 {
+  margin: 0;
+  overflow: hidden;
+}
+
+.runner .btn {
+  width: 8rem;
+}

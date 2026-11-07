@@ -76,17 +76,15 @@ if (stepsElement) {
     }
     const step = steps[index];
     paused = false;
-    get("pause-button").textContent = "Pause";
     get("progress").style.width = `${(index / steps.length) * 100}%`;
     get("round").textContent = step.round;
     get("title").textContent = step.title;
-    get("title").className = step.kind === "work" ? "display-4" : "display-4 text-info";
-    get("detail").textContent = step.kind === "ready" ? "" : step.detail;
+    get("title").className = step.kind === "work" ? "fs-3" : "fs-3 text-info";
+    get("detail").textContent = step.detail;
     get("description").textContent = step.description;
     get("next").textContent = step.next ? `Next: ${step.next}` : "";
     const timed = step.seconds > 0;
-    show("done-button", !timed);
-    show("pause-button", timed);
+    get("action-button").textContent = timed ? "Pause" : "Done";
     get("step-countdown").textContent = timed ? format(step.seconds) : "";
     if (step.kind === "work") {
       speak(timed ? step.title : `${step.title}. ${spokenDetail(step.detail)}`);
@@ -127,10 +125,13 @@ if (stepsElement) {
     goTo(0);
   });
 
-  get("done-button").addEventListener("click", () => goTo(index + 1));
   get("skip-button").addEventListener("click", () => goTo(index + 1));
 
-  get("pause-button").addEventListener("click", () => {
+  get("action-button").addEventListener("click", () => {
+    if (!steps[index].seconds) {
+      goTo(index + 1);
+      return;
+    }
     if (paused) {
       endTime = Date.now() + remaining;
       paused = false;
@@ -138,7 +139,7 @@ if (stepsElement) {
       remaining = endTime - Date.now();
       paused = true;
     }
-    get("pause-button").textContent = paused ? "Resume" : "Pause";
+    get("action-button").textContent = paused ? "Resume" : "Pause";
   });
 
   document.addEventListener("visibilitychange", () => {

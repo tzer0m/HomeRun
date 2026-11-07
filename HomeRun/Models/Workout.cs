@@ -99,7 +99,7 @@ namespace HomeRun.Models
                 bool previousIsRest = result.Count > 0 && result[^1].Kind == StepKind.Rest;
                 if (transitionSeconds > 0 && step.Kind == StepKind.Work && step.Seconds > 0 && !previousIsRest)
                 {
-                    result.Add(new SessionStep { Kind = StepKind.Ready, Title = "Get Ready", Seconds = transitionSeconds });
+                    result.Add(new SessionStep { Kind = StepKind.Ready, Title = "Get Ready", Detail = step.Detail, Seconds = transitionSeconds, Round = step.Round });
                 }
                 result.Add(step);
             }
