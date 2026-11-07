@@ -24,14 +24,14 @@ namespace HomeRun.Services
                 await Task.Delay(time - DateTime.Now + TimeSpan.FromSeconds(1), stoppingToken);
                 if (opening)
                 {
-                    await tingClient.SendAsync("Eating Window Open", $"Eat until {fasting.End:HH:mm}.");
+                    await tingClient.SendAsync("HomeRun: Eating Window Open", $"Eat until {fasting.End:HH:mm}.");
                 }
                 else
                 {
                     string? body = await GetClosedBodyAsync(fasting);
                     if (body != null)
                     {
-                        await tingClient.SendAsync("Eating Window Closed", body);
+                        await tingClient.SendAsync("HomeRun: Eating Window Closed", body);
                     }
                 }
             }
