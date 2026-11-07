@@ -1,4 +1,5 @@
 using HomeRun.Data;
+using HomeRun.Endpoints;
 using HomeRun.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -61,4 +62,5 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();
 app.MapHealthChecks("/health");
+app.MapGet("/api/widget", WidgetEndpoint.GetAsync);
 app.Run();
