@@ -34,8 +34,10 @@
 </div>
 <div id="complete" class="text-center d-none">
     <h1>Complete</h1>
+    <p id="saved" class="text-muted"></p>
     <a class="btn btn-primary btn-lg" href="/">Back to Today</a>
 </div>
+<form id="complete-form" method="post" asp-page-handler="complete" asp-route-id="@Model.Workout.Id"></form>
 <script id="steps" type="application/json">@Html.Raw(Model.StepsJson)</script>
 @section Scripts {
     <script src="~/js/session.js" asp-append-version="true"></script>

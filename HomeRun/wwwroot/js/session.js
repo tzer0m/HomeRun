@@ -58,12 +58,23 @@ if (stepsElement) {
     return detail.replace(/(\d+)s\b/g, "$1 seconds");
   }
 
+  async function save() {
+    const form = get("complete-form");
+    try {
+      const response = await fetch(form.action, { method: "POST", body: new FormData(form) });
+      get("saved").textContent = response.ok ? "Ticked off on Today" : "Could not tick off on Today";
+    } catch {
+      get("saved").textContent = "Could not tick off on Today";
+    }
+  }
+
   function finish() {
     clearInterval(timer);
     running = false;
     show("run", false);
     show("complete", true);
     speak("Complete");
+    save();
     if (wakeLock) {
       wakeLock.release();
     }
