@@ -1,0 +1,62 @@
+﻿@page
+@model HistoryModel
+@{
+    ViewData["Title"] = "History";
+}
+
+<h1 class="h3">History</h1>
+<div class="row g-3 mb-3">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">Current Streak</div>
+                <div class="fs-3">@Model.Streak @(Model.Streak == 1 ? "Day" : "Days")</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">Best Streak</div>
+                <div class="fs-3">@Model.BestStreak @(Model.BestStreak == 1 ? "Day" : "Days")</div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.Days.Count == 0)
+{
+    <p class="text-muted">Nothing recorded yet.</p>
+}
+else
+{
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Weight</th>
+                <th>Stretching</th>
+                <th>Workout</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (HistoryDay day in Model.Days)
+            {
+                <tr>
+                    <td>@day.Date.ToString("ddd d MMM")</td>
+                    <td>@(day.Kilograms.HasValue ? $"{day.Kilograms:0.0} kg" : "-")</td>
+                    <td><span class="badge rounded-pill @(day.Stretching ? "text-bg-success" : day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@(day.Stretching ? "Done" : day.Date == Model.Today ? "Pending" : "Missed")</span></td>
+                    <td>
+                        @if (day.WorkoutName.Length == 0)
+                        {
+                            <span>-</span>
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill @(day.WorkoutDone ? "text-bg-success" : day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@day.WorkoutName</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

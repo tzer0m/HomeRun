@@ -12,7 +12,8 @@ namespace HomeRun.Pages
     /// </summary>
     /// <param name="planService">The plan service.</param>
     /// <param name="db">The database context.</param>
-    public class IndexModel(PlanService planService, AppDbContext db) : PageModel
+    /// <param name="history">The history service.</param>
+    public class IndexModel(PlanService planService, AppDbContext db, HistoryService history) : PageModel
     {
         /// <summary>
         /// Today's date.
@@ -50,6 +51,11 @@ namespace HomeRun.Pages
         public List<ChecklistItem> Items { get; set; } = [];
 
         /// <summary>
+        /// The current streak of complete days.
+        /// </summary>
+        public int Streak { get; set; }
+
+        /// <summary>
         /// Whether the eating window is currently open.
         /// </summary>
         public bool Eating { get; set; }
@@ -72,6 +78,7 @@ namespace HomeRun.Pages
             LoadToday();
             WeightEntry? entry = await db.Weights.FirstOrDefaultAsync(x => x.Date == Today);
             Weight = entry?.Kilograms;
+            Streak = HistoryService.GetStreak(await history.GetDaysAsync(Today));
             HashSet<string> done = (await db.Checklist.Where(x => x.Date == Today).Select(x => x.Item).ToListAsync()).ToHashSet();
             Items.Add(new ChecklistItem { Id = Stretching.Id, Name = Stretching.Name, Done = done.Contains(Stretching.Id), HasSession = true });
             if (Workout != null)
