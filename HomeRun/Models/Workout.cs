@@ -66,8 +66,10 @@ namespace HomeRun.Models
             for (int round = 1; round <= rounds; round++)
             {
                 string roundText = Type == WorkoutType.Stretch || rounds == 1 ? string.Empty : $"Round {round} of {rounds}";
-                foreach (Move move in Moves)
+                int index = 0;
+                while (index < Moves.Count)
                 {
+                    Move move = Moves[index];
                     if (Type == WorkoutType.Circuit)
                     {
                         steps.Add(new SessionStep { Kind = StepKind.Work, Title = move.Name, Detail = $"{WorkSeconds}s", Description = move.Description, Seconds = WorkSeconds, Round = roundText });
@@ -75,11 +77,12 @@ namespace HomeRun.Models
                         {
                             steps.Add(RestStep(OffSeconds, roundText));
                         }
+                        index++;
+                        continue;
                     }
-                    else
-                    {
-                        steps.AddRange(move.ToSteps(roundText));
-                    }
+                    List<Move> block = move.Block.Length == 0 ? [move] : Moves.Skip(index).TakeWhile(x => x.Block == move.Block).ToList();
+                    steps.AddRange(Move.ToBlockSteps(block, roundText));
+                    index += block.Count;
                 }
                 if (Type == WorkoutType.Strength && RestSeconds > 0)
                 {

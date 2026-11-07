@@ -15,7 +15,8 @@
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
-        "each": "Side"
+        "each": "Side",
+        "block": "lunge-flow"
       },
       {
         "name": "Lunge With Reach",
@@ -23,7 +24,8 @@
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
-        "each": "Side"
+        "each": "Side",
+        "block": "lunge-flow"
       },
       {
         "name": "Half Splits",
@@ -31,7 +33,8 @@
         "type": "Timed",
         "seconds": 8,
         "sets": 3,
-        "each": "Side"
+        "each": "Side",
+        "block": "lunge-flow"
       },
       {
         "name": "90/90 Hip Stretch",
