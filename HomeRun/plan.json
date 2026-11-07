@@ -61,14 +61,16 @@
         "description": "Face down, lift arms, chest and legs off the floor, and hold.",
         "type": "Timed",
         "seconds": 15,
-        "each": "Side"
+        "each": "Side",
+        "block": "superman-flow"
       },
       {
         "name": "Single-Arm Single-Leg Superman",
         "description": "Face down, reach one arm forward and hold the opposite leg lifted behind you.",
         "type": "Timed",
         "seconds": 15,
-        "each": "Side"
+        "each": "Side",
+        "block": "superman-flow"
       },
       {
         "name": "Seated Straddle Toe Touch",
