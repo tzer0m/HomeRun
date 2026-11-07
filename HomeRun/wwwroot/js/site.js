@@ -3,8 +3,8 @@ function pad(value) {
 }
 
 const countdown = document.getElementById("countdown");
-if (countdown) {
-  const target = new Date(countdown.dataset.target).getTime();
+if (countdown && countdown.dataset.target) {
+  const target = Number(countdown.dataset.target);
   const timer = setInterval(() => {
     const left = Math.floor((target - Date.now()) / 1000);
     if (left <= 0) {

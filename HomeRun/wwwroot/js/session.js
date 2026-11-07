@@ -87,13 +87,11 @@ if (stepsElement) {
     const timed = step.seconds > 0;
     show("done-button", !timed);
     show("pause-button", timed);
-    get("countdown").textContent = timed ? format(step.seconds) : "";
+    get("step-countdown").textContent = timed ? format(step.seconds) : "";
     if (step.kind === "work") {
-      speak(`${step.title}. ${spokenDetail(step.detail)}`);
+      speak(timed ? step.title : `${step.title}. ${spokenDetail(step.detail)}`);
     } else if (step.kind === "rest") {
-      speak(`Rest. Next, ${spokenDetail(step.next)}`);
-    } else {
-      speak(`Get ready. ${spokenDetail(step.next)}`);
+      speak("Rest");
     }
     if (timed) {
       remaining = step.seconds * 1000;
@@ -109,8 +107,8 @@ if (stepsElement) {
     }
     const left = Math.max(0, endTime - Date.now());
     const seconds = Math.ceil(left / 1000);
-    get("countdown").textContent = format(seconds);
-    if (seconds > 0 && seconds <= 3 && seconds !== lastBeep) {
+    get("step-countdown").textContent = format(seconds);
+    if (seconds === 1 && seconds !== lastBeep) {
       lastBeep = seconds;
       beep(880, 120);
     }
