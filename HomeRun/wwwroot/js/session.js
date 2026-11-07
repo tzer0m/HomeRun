@@ -62,7 +62,8 @@ if (stepsElement) {
     const form = get("complete-form");
     try {
       const response = await fetch(form.action, { method: "POST", body: new FormData(form) });
-      get("saved").textContent = response.ok ? "Ticked off on Today" : "Could not tick off on Today";
+      const result = response.ok ? await response.json() : null;
+      get("saved").textContent = result === null ? "Could not tick off on Today" : result.ticked ? "Ticked off on Today" : "";
     } catch {
       get("saved").textContent = "Could not tick off on Today";
     }

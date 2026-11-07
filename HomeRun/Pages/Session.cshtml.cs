@@ -57,16 +57,13 @@ namespace HomeRun.Pages
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
             string? workoutId = planService.GetWorkout(today)?.Id;
-            if (id == planService.Plan.Stretching.Id || id == workoutId)
+            bool onToday = id == planService.Plan.Stretching.Id || id == workoutId;
+            if (onToday && !await db.Checklist.AnyAsync(x => x.Date == today && x.Item == id))
             {
-                bool ticked = await db.Checklist.AnyAsync(x => x.Date == today && x.Item == id);
-                if (!ticked)
-                {
-                    db.Checklist.Add(new ChecklistEntry { Date = today, Item = id });
-                    await db.SaveChangesAsync();
-                }
+                db.Checklist.Add(new ChecklistEntry { Date = today, Item = id });
+                await db.SaveChangesAsync();
             }
-            return new NoContentResult();
+            return new JsonResult(new { ticked = onToday });
         }
     }
 }
