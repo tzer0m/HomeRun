@@ -9,7 +9,8 @@ namespace HomeRun.Services
     /// <param name="planService">The plan service.</param>
     /// <param name="scopeFactory">Used to create a scope per notification, since the history service is scoped.</param>
     /// <param name="tingClient">The Ting notification client.</param>
-    public class FastingNotificationService(PlanService planService, IServiceScopeFactory scopeFactory, TingClient tingClient) : BackgroundService
+    /// <param name="configuration">The configuration, used for the site URL opened when a notification is tapped.</param>
+    public class FastingNotificationService(PlanService planService, IServiceScopeFactory scopeFactory, TingClient tingClient, IConfiguration configuration) : BackgroundService
     {
         /// <summary>
         /// Waits for each eating window change and sends a notification, until the application shuts down.
@@ -18,20 +19,21 @@ namespace HomeRun.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             FastingWindow fasting = planService.Plan.Fasting;
+            string? siteUrl = configuration["SiteUrl"];
             while (!stoppingToken.IsCancellationRequested)
             {
                 (DateTime time, bool opening) = GetNextChange(fasting);
                 await Task.Delay(time - DateTime.Now + TimeSpan.FromSeconds(1), stoppingToken);
                 if (opening)
                 {
-                    await tingClient.SendAsync("HomeRun: Eating Window Open", $"Eat until {fasting.End:HH:mm}.");
+                    await tingClient.SendAsync("HomeRun: Eating Window Open", $"Eat until {fasting.End:HH:mm}.", siteUrl);
                 }
                 else
                 {
                     string? body = await GetClosedBodyAsync(fasting);
                     if (body != null)
                     {
-                        await tingClient.SendAsync("HomeRun: Eating Window Closed", body);
+                        await tingClient.SendAsync("HomeRun: Eating Window Closed", body, siteUrl);
                     }
                 }
             }
