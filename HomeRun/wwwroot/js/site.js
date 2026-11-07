@@ -15,3 +15,10 @@ if (countdown && countdown.dataset.target) {
     countdown.textContent = `${pad(Math.floor(left / 3600))}:${pad(Math.floor((left % 3600) / 60))}:${pad(left % 60)}`;
   }, 1000);
 }
+
+function toggleWeight(box) {
+  const row = box.closest("li");
+  row.querySelector(".weight-view").classList.toggle("d-none", !box.checked);
+  row.querySelector(".weight-form").classList.toggle("d-none", box.checked);
+  row.classList.toggle("list-group-item-success", box.checked);
+}
