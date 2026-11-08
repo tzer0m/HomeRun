@@ -14,9 +14,13 @@ namespace HomeRun.Models
         /// </summary>
         Circuit,
         /// <summary>
-        /// A checklist tick only, such as a walk or rest day.
+        /// A checklist tick only, such as a walk.
         /// </summary>
         Tick,
+        /// <summary>
+        /// A rest day, which does not need ticking off.
+        /// </summary>
+        Rest,
         /// <summary>
         /// Rounds of timed stretch holds.
         /// </summary>

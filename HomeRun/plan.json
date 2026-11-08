@@ -229,7 +229,7 @@
     {
       "id": "rest",
       "name": "Rest",
-      "type": "Tick",
+      "type": "Rest",
       "description": "Light stretching",
       "moves": []
     }

@@ -32,7 +32,7 @@ namespace HomeRun.Endpoints
             HashSet<string> done = (await db.Checklist.Where(x => x.Date == today).Select(x => x.Item).ToListAsync(cancellationToken)).ToHashSet();
             Workout? workout = planService.GetWorkout(today);
             WidgetResponse response = new() { Tasks = [new WidgetTask { Name = "Weigh In", Done = await db.Weights.AnyAsync(x => x.Date == today, cancellationToken) }, new WidgetTask { Name = planService.Plan.Stretching.Name, Done = done.Contains(planService.Plan.Stretching.Id) }] };
-            if (workout != null)
+            if (workout != null && workout.Type != WorkoutType.Rest)
             {
                 response.Tasks.Add(new WidgetTask { Name = workout.Name, Done = done.Contains(workout.Id) });
             }

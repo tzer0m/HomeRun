@@ -29,6 +29,10 @@ namespace HomeRun.Services
             for (DateOnly date = dates.Min(); date <= today; date = date.AddDays(1))
             {
                 Workout? workout = planService.GetWorkout(date);
+                if (workout?.Type == WorkoutType.Rest)
+                {
+                    workout = null;
+                }
                 HashSet<string> done = entries.Where(x => x.Date == date).Select(x => x.Item).ToHashSet();
                 decimal? kilograms = weights.FirstOrDefault(x => x.Date == date)?.Kilograms;
                 days.Add(new HistoryDay { Date = date, Kilograms = kilograms, Stretching = done.Contains(stretchingId), WorkoutName = workout?.Name ?? string.Empty, WorkoutDone = workout != null && done.Contains(workout.Id) });

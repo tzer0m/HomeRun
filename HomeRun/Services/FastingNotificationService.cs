@@ -60,7 +60,7 @@ namespace HomeRun.Services
             {
                 pending.Add(planService.Plan.Stretching.Name);
             }
-            if (workout != null && day?.WorkoutDone != true)
+            if (workout != null && workout.Type != WorkoutType.Rest && day?.WorkoutDone != true)
             {
                 pending.Add(workout.Name);
             }

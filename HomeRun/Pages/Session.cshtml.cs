@@ -40,7 +40,7 @@ namespace HomeRun.Pages
         public IActionResult OnGet(string id)
         {
             Workout? workout = planService.GetWorkoutById(id, DateOnly.FromDateTime(DateTime.Now));
-            if (workout == null || workout.Type == WorkoutType.Tick)
+            if (workout == null || workout.Type is WorkoutType.Tick or WorkoutType.Rest)
             {
                 return NotFound();
             }
