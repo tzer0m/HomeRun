@@ -34,18 +34,17 @@ namespace HomeRun.Services
         public int GetCurrentWeek(DateOnly today)
         {
             int days = today.DayNumber - Data.StartDate.DayNumber;
-            return days < 0 ? 0 : Math.Min((days / 7) + 1, Data.Progression.Count);
+            return days < 0 ? 0 : Math.Min((days / 7) + 1, Data.Progression.Max(x => x.Week));
         }
 
         /// <summary>
-        /// Returns the progressed workout scheduled for a date, or null if nothing is scheduled.
+        /// Returns the progressed workout scheduled for a date, using the week's own schedule if it has one, or null if nothing is scheduled.
         /// </summary>
         /// <param name="date">The date to look up.</param>
         public Workout? GetWorkout(DateOnly date)
         {
-            int week = Math.Max(GetCurrentWeek(date), 1);
-            WeekProgression progression = Data.Progression.First(x => x.Week == week);
-            ScheduleDay? day = Data.Schedule.FirstOrDefault(x => x.Day == date.DayOfWeek);
+            WeekProgression progression = GetProgression(GetCurrentWeek(date));
+            ScheduleDay? day = (progression.Schedule ?? Data.Schedule).FirstOrDefault(x => x.Day == date.DayOfWeek);
             Workout? workout = Data.Workouts.FirstOrDefault(x => x.Id == day?.WorkoutId);
             return workout?.Progress(progression);
         }
@@ -61,21 +60,20 @@ namespace HomeRun.Services
             {
                 return Data.Stretching;
             }
-            int week = Math.Max(GetCurrentWeek(date), 1);
-            WeekProgression progression = Data.Progression.First(x => x.Week == week);
+            WeekProgression progression = GetProgression(GetCurrentWeek(date));
             return Data.Workouts.FirstOrDefault(x => x.Id == id)?.Progress(progression);
         }
 
         /// <summary>
-        /// Builds every week of the schedule with its progression applied.
+        /// Builds every week of the schedule from week 1 with its progression applied.
         /// </summary>
         public List<ScheduleWeek> GetSchedule()
         {
             List<ScheduleWeek> weeks = [];
-            foreach (WeekProgression progression in Data.Progression.OrderBy(x => x.Week))
+            foreach (WeekProgression progression in Data.Progression.Where(x => x.Week > 0).OrderBy(x => x.Week))
             {
                 ScheduleWeek week = new ScheduleWeek { Number = progression.Week };
-                foreach (ScheduleDay day in Data.Schedule.OrderBy(x => ((int)x.Day + 6) % 7))
+                foreach (ScheduleDay day in (progression.Schedule ?? Data.Schedule).OrderBy(x => ((int)x.Day + 6) % 7))
                 {
                     Workout? workout = Data.Workouts.FirstOrDefault(x => x.Id == day.WorkoutId);
                     week.Days.Add(new ScheduleEntry { Day = day.Day, Workout = workout?.Progress(progression) });
@@ -83,6 +81,15 @@ namespace HomeRun.Services
                 weeks.Add(week);
             }
             return weeks;
+        }
+
+        /// <summary>
+        /// Returns the progression for a week, or week 1's if the week is not in the plan.
+        /// </summary>
+        /// <param name="week">The week number.</param>
+        private WeekProgression GetProgression(int week)
+        {
+            return Data.Progression.FirstOrDefault(x => x.Week == week) ?? Data.Progression.First(x => x.Week == 1);
         }
 
         /// <summary>

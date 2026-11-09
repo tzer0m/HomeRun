@@ -6,7 +6,7 @@ namespace HomeRun.Models
     public class WidgetResponse
     {
         /// <summary>
-        /// Today's tasks: the weigh-in, stretching and the scheduled workout, if any.
+        /// Today's tasks: the weigh-in, stretching and an activity done by the workout or padel, if a workout is scheduled.
         /// </summary>
         public List<WidgetTask> Tasks { get; set; } = [];
     }

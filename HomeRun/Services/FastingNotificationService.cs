@@ -37,7 +37,7 @@ namespace HomeRun.Services
         }
 
         /// <summary>
-        /// Builds the closing notification body with the fasting end time, plus today's items that are not done yet if there are any.
+        /// Builds the closing notification body with the fasting end time, plus today's items that are not done yet if there are any, where padel covers the workout.
         /// </summary>
         /// <param name="fasting">The fasting window.</param>
         private async Task<string> GetClosedBodyAsync(FastingWindow fasting)
@@ -57,7 +57,7 @@ namespace HomeRun.Services
             {
                 pending.Add(planService.Plan.Stretching.Name);
             }
-            if (workout != null && workout.Type != WorkoutType.Rest && day?.WorkoutDone != true)
+            if (workout != null && workout.Type != WorkoutType.Rest && day?.WorkoutDone != true && day?.Padel != true)
             {
                 pending.Add(workout.Name);
             }

@@ -13,7 +13,7 @@ namespace HomeRun.Endpoints
     public static class WidgetEndpoint
     {
         /// <summary>
-        /// Returns today's tasks and whether each is done as JSON, or 401 if the API key is missing or wrong.
+        /// Returns today's tasks and whether each is done as JSON, with an activity task done by the workout or padel, or 401 if the API key is missing or wrong.
         /// </summary>
         /// <param name="request">The HTTP request, for the API key header.</param>
         /// <param name="planService">The plan service.</param>
@@ -34,7 +34,7 @@ namespace HomeRun.Endpoints
             WidgetResponse response = new() { Tasks = [new WidgetTask { Name = "Weigh In", Done = await db.Weights.AnyAsync(x => x.Date == today, cancellationToken) }, new WidgetTask { Name = planService.Plan.Stretching.Name, Done = done.Contains(planService.Plan.Stretching.Id) }] };
             if (workout != null && workout.Type != WorkoutType.Rest)
             {
-                response.Tasks.Add(new WidgetTask { Name = workout.Name, Done = done.Contains(workout.Id) });
+                response.Tasks.Add(new WidgetTask { Name = "Activity", Done = done.Contains(workout.Id) || done.Contains(planService.Plan.Padel.Id) });
             }
             return Results.Ok(response);
         }

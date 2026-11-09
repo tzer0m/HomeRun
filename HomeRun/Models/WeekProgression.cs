@@ -34,5 +34,10 @@ namespace HomeRun.Models
         /// Overrides the seconds off for circuits.
         /// </summary>
         public int? OffSeconds { get; set; }
+
+        /// <summary>
+        /// Overrides the plan's schedule for this week, or null to use the plan's schedule.
+        /// </summary>
+        public List<ScheduleDay>? Schedule { get; set; }
     }
 }

@@ -31,8 +31,13 @@ namespace HomeRun.Models
         public bool WorkoutDone { get; set; }
 
         /// <summary>
-        /// Whether everything scheduled that day was ticked.
+        /// Whether padel was ticked, which counts as the day's workout.
         /// </summary>
-        public bool Complete => Stretching && (WorkoutName.Length == 0 || WorkoutDone);
+        public bool Padel { get; set; }
+
+        /// <summary>
+        /// Whether stretching and either the scheduled workout or padel were ticked.
+        /// </summary>
+        public bool Complete => Stretching && (WorkoutName.Length == 0 || WorkoutDone || Padel);
     }
 }

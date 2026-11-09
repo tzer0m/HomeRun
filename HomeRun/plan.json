@@ -94,6 +94,12 @@
       }
     ]
   },
+  "padel": {
+    "id": "padel",
+    "name": "Padel (Optional)",
+    "type": "Tick",
+    "moves": []
+  },
   "workouts": [
     {
       "id": "strength-a",
@@ -237,34 +243,67 @@
   "schedule": [
     {
       "day": "Monday",
-      "workoutId": "strength-a"
+      "workoutId": "rest"
     },
     {
       "day": "Tuesday",
-      "workoutId": "walk"
-    },
-    {
-      "day": "Wednesday",
-      "workoutId": "strength-b"
-    },
-    {
-      "day": "Thursday",
-      "workoutId": "cardio-circuit"
-    },
-    {
-      "day": "Friday",
       "workoutId": "strength-a"
     },
     {
+      "day": "Wednesday",
+      "workoutId": "walk"
+    },
+    {
+      "day": "Thursday",
+      "workoutId": "strength-b"
+    },
+    {
+      "day": "Friday",
+      "workoutId": "cardio-circuit"
+    },
+    {
       "day": "Saturday",
-      "workoutId": "walk-hills"
+      "workoutId": "strength-a"
     },
     {
       "day": "Sunday",
-      "workoutId": "rest"
+      "workoutId": "walk-hills"
     }
   ],
   "progression": [
+    {
+      "week": 0,
+      "schedule": [
+        {
+          "day": "Monday",
+          "workoutId": "strength-a"
+        },
+        {
+          "day": "Tuesday",
+          "workoutId": "walk"
+        },
+        {
+          "day": "Wednesday",
+          "workoutId": "strength-b"
+        },
+        {
+          "day": "Thursday",
+          "workoutId": "cardio-circuit"
+        },
+        {
+          "day": "Friday",
+          "workoutId": "strength-a"
+        },
+        {
+          "day": "Saturday",
+          "workoutId": "walk-hills"
+        },
+        {
+          "day": "Sunday",
+          "workoutId": "rest"
+        }
+      ]
+    },
     {
       "week": 1
     },

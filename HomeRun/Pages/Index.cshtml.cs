@@ -71,7 +71,7 @@ namespace HomeRun.Pages
         public string RemainingText { get; set; } = string.Empty;
 
         /// <summary>
-        /// Loads today's workout, stretching, fasting state and whether weight is recorded.
+        /// Loads today's workout, stretching, optional padel, fasting state and whether weight is recorded.
         /// </summary>
         public async Task OnGetAsync()
         {
@@ -85,6 +85,8 @@ namespace HomeRun.Pages
             {
                 Items.Add(new ChecklistItem { Id = Workout.Id, Name = Workout.Name, Done = done.Contains(Workout.Id), HasSession = Workout.Type != WorkoutType.Tick });
             }
+            Workout padel = planService.Plan.Padel;
+            Items.Add(new ChecklistItem { Id = padel.Id, Name = padel.Name, Done = done.Contains(padel.Id) });
         }
 
         /// <summary>
@@ -111,12 +113,12 @@ namespace HomeRun.Pages
         /// <summary>
         /// Ticks an item off for today, or unticks it if already ticked.
         /// </summary>
-        /// <param name="item">The ID of the stretching routine or today's workout.</param>
+        /// <param name="item">The ID of the stretching routine, today's workout or padel.</param>
         public async Task<IActionResult> OnPostTickAsync(string item)
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
             string? workoutId = planService.GetWorkout(today)?.Id;
-            if (item == planService.Plan.Stretching.Id || item == workoutId)
+            if (item == planService.Plan.Stretching.Id || item == workoutId || item == planService.Plan.Padel.Id)
             {
                 ChecklistEntry? entry = await db.Checklist.FirstOrDefaultAsync(x => x.Date == today && x.Item == item);
                 if (entry == null)
