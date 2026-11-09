@@ -4,7 +4,7 @@ using t0m.Ting;
 namespace HomeRun.Services
 {
     /// <summary>
-    /// Background service that sends a Ting notification when the eating window opens and closes, listing anything left to do when it closes.
+    /// Background service that sends a Ting notification every time the eating window opens and closes, adding anything still to do to the closing one.
     /// </summary>
     /// <param name="planService">The plan service.</param>
     /// <param name="scopeFactory">Used to create a scope per notification, since the history service is scoped.</param>
@@ -13,7 +13,7 @@ namespace HomeRun.Services
     public class FastingNotificationService(PlanService planService, IServiceScopeFactory scopeFactory, TingClient tingClient, IConfiguration configuration) : BackgroundService
     {
         /// <summary>
-        /// Waits for each eating window change and sends a notification, until the application shuts down.
+        /// Waits for each eating window change and always sends the matching notification, until the application shuts down.
         /// </summary>
         /// <param name="stoppingToken">Signals that the application is stopping.</param>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,20 +30,17 @@ namespace HomeRun.Services
                 }
                 else
                 {
-                    string? body = await GetClosedBodyAsync(fasting);
-                    if (body != null)
-                    {
-                        await tingClient.SendAsync("HomeRun: Eating Window Closed", body, siteUrl);
-                    }
+                    string body = await GetClosedBodyAsync(fasting);
+                    await tingClient.SendAsync("HomeRun: Eating Window Closed", body, siteUrl);
                 }
             }
         }
 
         /// <summary>
-        /// Builds the closing notification body, listing today's items that are not done yet, or null if everything is done.
+        /// Builds the closing notification body with the fasting end time, plus today's items that are not done yet if there are any.
         /// </summary>
         /// <param name="fasting">The fasting window.</param>
-        private async Task<string?> GetClosedBodyAsync(FastingWindow fasting)
+        private async Task<string> GetClosedBodyAsync(FastingWindow fasting)
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
             using IServiceScope scope = scopeFactory.CreateScope();
@@ -64,7 +61,8 @@ namespace HomeRun.Services
             {
                 pending.Add(workout.Name);
             }
-            return pending.Count == 0 ? null : $"Fasting until {fasting.Start:HH:mm}. Still to do: {string.Join(", ", pending)}.";
+            string body = $"Fasting until {fasting.Start:HH:mm}.";
+            return pending.Count == 0 ? body : $"{body} Still to do: {string.Join(", ", pending)}.";
         }
 
         /// <summary>
