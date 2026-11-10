@@ -21,6 +21,16 @@ namespace HomeRun.Models
         public int LowerSeconds { get; set; }
 
         /// <summary>
+        /// Overrides the number of rounds for strength workouts.
+        /// </summary>
+        public int? Rounds { get; set; }
+
+        /// <summary>
+        /// Overrides the number of rounds for circuits.
+        /// </summary>
+        public int? CircuitRounds { get; set; }
+
+        /// <summary>
         /// Overrides the rest between rounds for strength workouts.
         /// </summary>
         public int? RestSeconds { get; set; }

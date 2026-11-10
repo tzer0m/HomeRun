@@ -124,7 +124,7 @@ namespace HomeRun.Models
         {
             bool strength = Type == WorkoutType.Strength;
             bool circuit = Type == WorkoutType.Circuit;
-            return new Workout { Id = Id, Name = Name, Type = Type, Description = Description, Rounds = Rounds, RestSeconds = strength ? (progression.RestSeconds ?? RestSeconds) : RestSeconds, WorkSeconds = circuit ? (progression.WorkSeconds ?? WorkSeconds) : WorkSeconds, OffSeconds = circuit ? (progression.OffSeconds ?? OffSeconds) : OffSeconds, Moves = Moves.Select(x => x.Progress(progression)).ToList() };
+            return new Workout { Id = Id, Name = Name, Type = Type, Description = Description, Rounds = strength ? (progression.Rounds ?? Rounds) : circuit ? (progression.CircuitRounds ?? Rounds) : Rounds, RestSeconds = strength ? (progression.RestSeconds ?? RestSeconds) : RestSeconds, WorkSeconds = circuit ? (progression.WorkSeconds ?? WorkSeconds) : WorkSeconds, OffSeconds = circuit ? (progression.OffSeconds ?? OffSeconds) : OffSeconds, Moves = Moves.Select(x => x.Progress(progression)).ToList() };
         }
     }
 }

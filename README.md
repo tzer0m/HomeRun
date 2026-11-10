@@ -2,11 +2,11 @@
 
 [![Deploy](https://github.com/tzer0m/HomeRun/actions/workflows/deploy.yml/badge.svg)](https://github.com/tzer0m/HomeRun/actions/workflows/deploy.yml) [![Dependabot](https://github.com/tzer0m/HomeRun/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/tzer0m/HomeRun/actions/workflows/dependabot/dependabot-updates)
 
-A simple home workout site: a daily checklist with a fasting countdown, a timed session runner, and the 4-week schedule with progression applied.
+A simple home workout site: a daily checklist with a fasting countdown, a timed session runner, and the 8-week schedule with progression applied.
 
 ## Plan
 
-The plan lives in `HomeRun/plan.json` and is edited by hand. It holds the start date, the fasting window, the daily stretching routine, the workouts, the weekly schedule and the 4-week progression. It is copied to the output folder on build.
+The plan lives in `HomeRun/plan.json` and is edited by hand. It holds the start date, the fasting window, the daily stretching routine, the workouts, the weekly schedule and the 8-week progression. It is copied to the output folder on build.
 
 ## Development
 

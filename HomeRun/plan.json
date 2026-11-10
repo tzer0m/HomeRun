@@ -118,7 +118,7 @@
           "name": "Push-Ups",
           "description": "Hands under shoulders, body straight, lower chest to the floor and press back up.",
           "type": "Reps",
-          "reps": 10
+          "reps": 6
         },
         {
           "name": "Reverse Lunges",
@@ -160,7 +160,7 @@
           "name": "Chair Dips",
           "description": "Hands on a chair behind you, bend elbows to lower hips, then press back up.",
           "type": "Reps",
-          "reps": 10
+          "reps": 6
         },
         {
           "name": "Wall Sit",
@@ -179,7 +179,7 @@
           "name": "Pike Push-Ups",
           "description": "Hips high in an inverted V, bend elbows to lower your head towards the floor, then press up.",
           "type": "Reps",
-          "reps": 8
+          "reps": 5
         }
       ]
     },
@@ -305,23 +305,43 @@
       ]
     },
     {
-      "week": 1
+      "week": 1,
+      "rounds": 2,
+      "circuitRounds": 3
     },
     {
-      "week": 2
+      "week": 2,
+      "circuitRounds": 3
     },
     {
-      "week": 3,
+      "week": 3
+    },
+    {
+      "week": 4
+    },
+    {
+      "week": 5,
+      "extraReps": 2
+    },
+    {
+      "week": 6,
       "extraReps": 2,
       "restSeconds": 45
     },
     {
-      "week": 4,
+      "week": 7,
       "extraReps": 2,
       "restSeconds": 45,
-      "lowerSeconds": 3,
       "workSeconds": 45,
       "offSeconds": 15
+    },
+    {
+      "week": 8,
+      "extraReps": 2,
+      "restSeconds": 45,
+      "workSeconds": 45,
+      "offSeconds": 15,
+      "lowerSeconds": 3
     }
   ]
 }
