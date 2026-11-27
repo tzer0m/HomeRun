@@ -52,6 +52,10 @@ builder.Services.AddAuthorization();
 
 // Create the web application and configure.
 WebApplication app = builder.Build();
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
+}
 app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto });
 if (!app.Environment.IsDevelopment())
 {
