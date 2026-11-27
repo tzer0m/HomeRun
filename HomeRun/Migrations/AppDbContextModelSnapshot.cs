@@ -45,6 +45,22 @@ namespace HomeRun.Migrations
                     b.ToTable("Checklist");
                 });
 
+            modelBuilder.Entity("HomeRun.Models.Settings", b =>
+                {
+                    b.Property<int>("SettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SettingsId"));
+
+                    b.Property<bool>("FastingEnabled")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("SettingsId");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("HomeRun.Models.WeightEntry", b =>
                 {
                     b.Property<int>("WeightEntryId")

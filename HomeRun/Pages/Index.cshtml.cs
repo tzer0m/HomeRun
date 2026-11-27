@@ -13,7 +13,8 @@ namespace HomeRun.Pages
     /// <param name="planService">The plan service.</param>
     /// <param name="db">The database context.</param>
     /// <param name="history">The history service.</param>
-    public class IndexModel(PlanService planService, AppDbContext db, HistoryService history) : PageModel
+    /// <param name="settingsService">The settings service.</param>
+    public class IndexModel(PlanService planService, AppDbContext db, HistoryService history, SettingsService settingsService) : PageModel
     {
         /// <summary>
         /// Today's date.
@@ -71,6 +72,16 @@ namespace HomeRun.Pages
         public string RemainingText { get; set; } = string.Empty;
 
         /// <summary>
+        /// Whether fasting is switched on.
+        /// </summary>
+        public bool FastingEnabled { get; set; }
+
+        /// <summary>
+        /// A suggestion to switch fasting off or back on based on the latest weigh-in, or empty if there is none.
+        /// </summary>
+        public string FastingPrompt { get; set; } = string.Empty;
+
+        /// <summary>
         /// Loads today's workout, stretching, optional padel, fasting state and whether weight is recorded.
         /// </summary>
         public async Task OnGetAsync()
@@ -78,6 +89,9 @@ namespace HomeRun.Pages
             LoadToday();
             WeightEntry? entry = await db.Weights.FirstOrDefaultAsync(x => x.Date == Today);
             Weight = entry?.Kilograms;
+            FastingEnabled = (await settingsService.GetAsync()).FastingEnabled;
+            decimal? latest = await db.Weights.OrderByDescending(x => x.Date).Select(x => (decimal?)x.Kilograms).FirstOrDefaultAsync();
+            FastingPrompt = GetFastingPrompt(latest);
             Streak = HistoryService.GetStreak(await history.GetDaysAsync(Today));
             HashSet<string> done = (await db.Checklist.Where(x => x.Date == Today).Select(x => x.Item).ToListAsync()).ToHashSet();
             Items.Add(new ChecklistItem { Id = Stretching.Id, Name = Stretching.Name, Done = done.Contains(Stretching.Id), HasSession = true });
@@ -107,6 +121,16 @@ namespace HomeRun.Pages
                 entry.Kilograms = weight.Value;
                 await db.SaveChangesAsync();
             }
+            return RedirectToPage();
+        }
+
+        /// <summary>
+        /// Switches fasting on or off.
+        /// </summary>
+        /// <param name="enabled">Whether fasting should be on.</param>
+        public async Task<IActionResult> OnPostFastingAsync(bool enabled)
+        {
+            await settingsService.SetFastingAsync(enabled);
             return RedirectToPage();
         }
 
@@ -150,6 +174,28 @@ namespace HomeRun.Pages
             DateTime target = Eating ? now.Date.Add(fasting.End.ToTimeSpan()) : (time < fasting.Start ? now.Date.Add(fasting.Start.ToTimeSpan()) : now.Date.AddDays(1).Add(fasting.Start.ToTimeSpan()));
             FastingTarget = new DateTimeOffset(target);
             RemainingText = (target - now).ToString(@"hh\:mm\:ss");
+        }
+
+        /// <summary>
+        /// Builds the prompt to switch fasting off when under the stop weight, or back on when over the resume weight.
+        /// </summary>
+        /// <param name="latest">The most recent weigh-in in kilograms, or null if there are none.</param>
+        private string GetFastingPrompt(decimal? latest)
+        {
+            FastingWindow fasting = planService.Plan.Fasting;
+            if (latest == null)
+            {
+                return string.Empty;
+            }
+            if (FastingEnabled && latest < fasting.StopBelowKg)
+            {
+                return $"Under {fasting.StopBelowKg:0.0} kg, you can switch fasting off";
+            }
+            if (!FastingEnabled && latest > fasting.ResumeAboveKg)
+            {
+                return $"Over {fasting.ResumeAboveKg:0.0} kg, time to fast again";
+            }
+            return string.Empty;
         }
     }
 }

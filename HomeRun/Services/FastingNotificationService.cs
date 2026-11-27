@@ -4,16 +4,16 @@ using t0m.Ting;
 namespace HomeRun.Services
 {
     /// <summary>
-    /// Background service that sends a Ting notification every time the eating window opens and closes, adding anything still to do to the closing one.
+    /// Background service that sends a Ting notification when the eating window opens and closes, adding anything still to do to the closing one, or only sending what is still to do when fasting is off.
     /// </summary>
     /// <param name="planService">The plan service.</param>
-    /// <param name="scopeFactory">Used to create a scope per notification, since the history service is scoped.</param>
+    /// <param name="scopeFactory">Used to create a scope per notification, since the history and settings services are scoped.</param>
     /// <param name="tingClient">The Ting notification client.</param>
     /// <param name="configuration">The configuration, used for the site URL opened when a notification is tapped.</param>
     public class FastingNotificationService(PlanService planService, IServiceScopeFactory scopeFactory, TingClient tingClient, IConfiguration configuration) : BackgroundService
     {
         /// <summary>
-        /// Waits for each eating window change and always sends the matching notification, until the application shuts down.
+        /// Waits for each eating window change and sends the matching notification, until the application shuts down.
         /// </summary>
         /// <param name="stoppingToken">Signals that the application is stopping.</param>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -24,27 +24,39 @@ namespace HomeRun.Services
             {
                 (DateTime time, bool opening) = GetNextChange(fasting);
                 await Task.Delay(time - DateTime.Now + TimeSpan.FromSeconds(1), stoppingToken);
+                using IServiceScope scope = scopeFactory.CreateScope();
+                bool enabled = (await scope.ServiceProvider.GetRequiredService<SettingsService>().GetAsync()).FastingEnabled;
                 if (opening)
                 {
-                    await tingClient.SendAsync("HomeRun: Eating Window Open", $"Eat until {fasting.End:HH:mm}.", siteUrl);
+                    if (enabled)
+                    {
+                        await tingClient.SendAsync("HomeRun: Eating Window Open", $"Eat until {fasting.End:HH:mm}.", siteUrl);
+                    }
                 }
                 else
                 {
-                    string body = await GetClosedBodyAsync(fasting);
-                    await tingClient.SendAsync("HomeRun: Eating Window Closed", body, siteUrl);
+                    List<string> pending = await GetPendingAsync(scope.ServiceProvider.GetRequiredService<HistoryService>());
+                    string todo = pending.Count == 0 ? string.Empty : $"Still to do: {string.Join(", ", pending)}.";
+                    if (enabled)
+                    {
+                        string body = $"Fasting until {fasting.Start:HH:mm}.";
+                        await tingClient.SendAsync("HomeRun: Eating Window Closed", todo.Length == 0 ? body : $"{body} {todo}", siteUrl);
+                    }
+                    else if (todo.Length > 0)
+                    {
+                        await tingClient.SendAsync("HomeRun: Still To Do", todo, siteUrl);
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Builds the closing notification body with the fasting end time, plus today's items that are not done yet if there are any, where padel covers the workout.
+        /// Returns the names of today's items that are not done yet, where padel covers the workout.
         /// </summary>
-        /// <param name="fasting">The fasting window.</param>
-        private async Task<string> GetClosedBodyAsync(FastingWindow fasting)
+        /// <param name="history">The history service.</param>
+        private async Task<List<string>> GetPendingAsync(HistoryService history)
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            using IServiceScope scope = scopeFactory.CreateScope();
-            HistoryService history = scope.ServiceProvider.GetRequiredService<HistoryService>();
             List<HistoryDay> days = await history.GetDaysAsync(today);
             HistoryDay? day = days.Count > 0 ? days[^1] : null;
             Workout? workout = planService.GetWorkout(today);
@@ -61,8 +73,7 @@ namespace HomeRun.Services
             {
                 pending.Add(workout.Name);
             }
-            string body = $"Fasting until {fasting.Start:HH:mm}.";
-            return pending.Count == 0 ? body : $"{body} Still to do: {string.Join(", ", pending)}.";
+            return pending;
         }
 
         /// <summary>

@@ -20,6 +20,11 @@ namespace HomeRun.Data
         public DbSet<ChecklistEntry> Checklist { get; set; }
 
         /// <summary>
+        /// The site's saved settings, a single row.
+        /// </summary>
+        public DbSet<Settings> Settings { get; set; }
+
+        /// <summary>
         /// Configures the model.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
