@@ -33,14 +33,6 @@ if (stepsElement) {
     oscillator.stop(audio.currentTime + milliseconds / 1000);
   }
 
-  function speak(text) {
-    if (!("speechSynthesis" in window)) {
-      return;
-    }
-    speechSynthesis.cancel();
-    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-  }
-
   async function requestWakeLock() {
     try {
       wakeLock = await navigator.wakeLock.request("screen");
@@ -52,10 +44,6 @@ if (stepsElement) {
   function format(seconds) {
     const minutes = Math.floor(seconds / 60);
     return minutes > 0 ? `${minutes}:${String(seconds % 60).padStart(2, "0")}` : String(seconds);
-  }
-
-  function spokenDetail(detail) {
-    return detail.replace(/(\d+)s\b/g, "$1 seconds");
   }
 
   async function save() {
@@ -74,7 +62,6 @@ if (stepsElement) {
     running = false;
     show("run", false);
     show("complete", true);
-    speak("Complete");
     save();
     if (wakeLock) {
       wakeLock.release();
@@ -131,11 +118,6 @@ if (stepsElement) {
     get("action-button").textContent = timed ? "Pause" : "Done";
     get("step-countdown").textContent = timed ? format(step.seconds) : step.detail;
     get("step-countdown").classList.toggle("is-text", !timed);
-    if (step.kind === "work") {
-      speak(timed ? step.title : `${step.title}. ${spokenDetail(step.detail)}`);
-    } else if (step.kind === "rest") {
-      speak("Rest");
-    }
     if (timed) {
       total = step.seconds * 1000;
       remaining = total;
