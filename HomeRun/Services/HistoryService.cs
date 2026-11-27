@@ -26,7 +26,7 @@ namespace HomeRun.Services
                 return days;
             }
             string stretchingId = planService.Plan.Stretching.Id;
-            string padelId = planService.Plan.Padel.Id;
+            string otherId = planService.Plan.Other.Id;
             for (DateOnly date = dates.Min(); date <= today; date = date.AddDays(1))
             {
                 Workout? workout = planService.GetWorkout(date);
@@ -34,9 +34,11 @@ namespace HomeRun.Services
                 {
                     workout = null;
                 }
-                HashSet<string> done = entries.Where(x => x.Date == date).Select(x => x.Item).ToHashSet();
+                List<ChecklistEntry> dayEntries = [.. entries.Where(x => x.Date == date)];
+                HashSet<string> done = dayEntries.Select(x => x.Item).ToHashSet();
+                string other = dayEntries.FirstOrDefault(x => x.Item == otherId)?.Note ?? string.Empty;
                 decimal? kilograms = weights.FirstOrDefault(x => x.Date == date)?.Kilograms;
-                days.Add(new HistoryDay { Date = date, Kilograms = kilograms, Stretching = done.Contains(stretchingId), WorkoutName = workout?.Name ?? string.Empty, WorkoutDone = workout != null && done.Contains(workout.Id), Padel = done.Contains(padelId) });
+                days.Add(new HistoryDay { Date = date, Kilograms = kilograms, Stretching = done.Contains(stretchingId), WorkoutName = workout?.Name ?? string.Empty, WorkoutDone = workout != null && done.Contains(workout.Id), Other = other });
             }
             return days;
         }

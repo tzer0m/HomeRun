@@ -51,7 +51,7 @@ namespace HomeRun.Services
         }
 
         /// <summary>
-        /// Returns the names of today's items that are not done yet, where padel covers the workout.
+        /// Returns the names of today's items that are not done yet, where an other exercise covers the workout.
         /// </summary>
         /// <param name="history">The history service.</param>
         private async Task<List<string>> GetPendingAsync(HistoryService history)
@@ -69,7 +69,7 @@ namespace HomeRun.Services
             {
                 pending.Add(planService.Plan.Stretching.Name);
             }
-            if (workout != null && workout.Type != WorkoutType.Rest && day?.WorkoutDone != true && day?.Padel != true)
+            if (workout != null && workout.Type != WorkoutType.Rest && day?.WorkoutDone != true && day?.OtherDone != true)
             {
                 pending.Add(workout.Name);
             }

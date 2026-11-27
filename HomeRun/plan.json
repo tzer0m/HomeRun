@@ -96,9 +96,9 @@
       }
     ]
   },
-  "padel": {
-    "id": "padel",
-    "name": "Padel (Optional)",
+  "other": {
+    "id": "other",
+    "name": "Other Exercise",
     "type": "Tick",
     "moves": []
   },

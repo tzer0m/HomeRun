@@ -19,5 +19,10 @@ namespace HomeRun.Models
         /// The ID of the completed workout or routine.
         /// </summary>
         public string Item { get; set; } = string.Empty;
+
+        /// <summary>
+        /// What was done, for the other exercise item, or null for other items.
+        /// </summary>
+        public string? Note { get; set; }
     }
 }

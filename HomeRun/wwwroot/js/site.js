@@ -16,9 +16,9 @@ if (countdown && countdown.dataset.target) {
   }, 1000);
 }
 
-function toggleWeight(box) {
+function toggleEntry(box) {
   const row = box.closest("li");
-  row.querySelector(".weight-view").classList.toggle("d-none", !box.checked);
-  row.querySelector(".weight-form").classList.toggle("d-none", box.checked);
+  row.querySelector(".entry-view").classList.toggle("d-none", !box.checked);
+  row.querySelector(".entry-form").classList.toggle("d-none", box.checked);
   row.classList.toggle("list-group-item-success", box.checked);
 }

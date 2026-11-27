@@ -36,7 +36,7 @@ else
                 <th>Weight</th>
                 <th>Stretching</th>
                 <th>Workout</th>
-                <th>Padel</th>
+                <th>Other</th>
             </tr>
         </thead>
         <tbody>
@@ -53,13 +53,13 @@ else
                         }
                         else
                         {
-                            <span class="badge rounded-pill @(day.WorkoutDone ? "text-bg-success" : day.Padel || day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@day.WorkoutName</span>
+                            <span class="badge rounded-pill @(day.WorkoutDone ? "text-bg-success" : day.OtherDone || day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@day.WorkoutName</span>
                         }
                     </td>
                     <td>
-                        @if (day.Padel)
+                        @if (day.OtherDone)
                         {
-                            <span class="badge rounded-pill text-bg-success">Done</span>
+                            <span class="badge rounded-pill text-bg-success">@day.Other</span>
                         }
                         else
                         {

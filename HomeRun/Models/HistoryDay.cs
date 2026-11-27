@@ -31,13 +31,18 @@ namespace HomeRun.Models
         public bool WorkoutDone { get; set; }
 
         /// <summary>
-        /// Whether padel was ticked, which counts as the day's workout.
+        /// The other exercise entered that day, or empty if none, which counts as the day's workout.
         /// </summary>
-        public bool Padel { get; set; }
+        public string Other { get; set; } = string.Empty;
 
         /// <summary>
-        /// Whether stretching and either the scheduled workout or padel were ticked.
+        /// Whether an other exercise was entered.
         /// </summary>
-        public bool Complete => Stretching && (WorkoutName.Length == 0 || WorkoutDone || Padel);
+        public bool OtherDone => Other.Length > 0;
+
+        /// <summary>
+        /// Whether stretching and either the scheduled workout or an other exercise were done.
+        /// </summary>
+        public bool Complete => Stretching && (WorkoutName.Length == 0 || WorkoutDone || OtherDone);
     }
 }

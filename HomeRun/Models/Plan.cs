@@ -21,9 +21,9 @@ namespace HomeRun.Models
         public Workout Stretching { get; set; } = new Workout();
 
         /// <summary>
-        /// The optional padel tick, which counts as the day's workout when ticked.
+        /// The optional other exercise entry, which counts as the day's workout when entered.
         /// </summary>
-        public Workout Padel { get; set; } = new Workout();
+        public Workout Other { get; set; } = new Workout();
 
         /// <summary>
         /// All available workouts.
