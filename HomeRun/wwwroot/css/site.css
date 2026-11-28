@@ -80,6 +80,19 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
+.history-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.history-row .badge {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .day-row {
   --bs-list-group-bg: var(--bs-secondary-bg);
 }

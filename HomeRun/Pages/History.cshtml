@@ -31,23 +31,39 @@
 else
 {
     <div class="list-group">
+        <div class="list-group-item history-row item-sub">
+            <span>Date</span>
+            <span>Stretching</span>
+            <span>Workout</span>
+            <span>Other</span>
+        </div>
         @foreach (HistoryDay day in Model.Days)
         {
             bool today = day.Date == Model.Today;
-            <div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+            <div class="list-group-item history-row">
                 <div class="text-nowrap">
                     <div class="item-name">@day.Date.ToString("ddd d MMM")</div>
                     <div class="item-sub">@(day.Kilograms.HasValue ? $"{day.Kilograms:0.0} kg" : "No Weigh In")</div>
                 </div>
-                <div class="d-flex flex-wrap gap-1 justify-content-end">
-                    <span class="badge @(day.Stretching ? "soft-success" : today ? "soft" : "soft-danger")">Stretching</span>
+                <div><span class="badge @(day.Stretching ? "soft-success" : today ? "soft" : "soft-danger")">@(day.Stretching ? "Done" : today ? "Pending" : "Missed")</span></div>
+                <div>
                     @if (day.WorkoutName.Length > 0)
                     {
                         <span class="badge @(day.WorkoutDone ? "soft-success" : day.OtherDone || today ? "soft" : "soft-danger")">@day.WorkoutName</span>
                     }
+                    else
+                    {
+                        <span class="item-sub">-</span>
+                    }
+                </div>
+                <div>
                     @if (day.OtherDone)
                     {
-                        <span class="badge soft-success">@day.Other</span>
+                        <span class="badge soft-success" title="@day.Other">@day.Other</span>
+                    }
+                    else
+                    {
+                        <span class="item-sub">-</span>
                     }
                 </div>
             </div>
