@@ -72,7 +72,7 @@ namespace HomeRun.Models
                     Move move = Moves[index];
                     if (Type == WorkoutType.Circuit)
                     {
-                        steps.Add(new SessionStep { Kind = StepKind.Work, Title = move.Name, Detail = $"{WorkSeconds}s", Description = move.Description, Seconds = WorkSeconds, Round = roundText });
+                        steps.Add(new SessionStep { Kind = StepKind.Work, Title = move.Name, Detail = $"{WorkSeconds}s", Description = move.Description, Seconds = WorkSeconds, Round = roundText, Move = move.Name });
                         if (OffSeconds > 0)
                         {
                             steps.Add(RestStep(OffSeconds, roundText));

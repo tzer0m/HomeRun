@@ -39,8 +39,8 @@
         "block": "lunge-flow"
       },
       {
-        "name": "90/90 Hip Stretch",
-        "description": "Sit with both knees bent at 90 degrees, one leg in front and one to the side, and lean over the front shin.",
+        "name": "Pigeon Stretch",
+        "description": "Front leg tucked in front of your hips and back leg extended straight behind, sit tall, then fold forward over the front leg.",
         "type": "Timed",
         "seconds": 30,
         "each": "Side"
@@ -60,7 +60,7 @@
       },
       {
         "name": "Superman Hold",
-        "description": "Face down, lift arms, chest and legs off the floor, and hold.",
+        "description": "On hands and knees, extend one arm forward and the opposite leg back, and hold.",
         "type": "Timed",
         "seconds": 15,
         "each": "Side",
@@ -68,7 +68,7 @@
       },
       {
         "name": "Single-Arm Single-Leg Superman",
-        "description": "Face down, reach one arm forward and hold the opposite leg lifted behind you.",
+        "description": "On hands and knees, extend one arm and the opposite leg, then bend the knee and hold the ankle behind you with the extended hand.",
         "type": "Timed",
         "seconds": 15,
         "each": "Side",

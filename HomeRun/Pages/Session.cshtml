@@ -15,16 +15,22 @@
     </div>
     <div class="runner-round"><span id="round" class="badge rounded-pill text-bg-secondary"></span></div>
     <h1 id="title" class="fs-3 fw-semibold"></h1>
-    <div class="ring-wrap">
-        <svg viewBox="0 0 120 120" aria-hidden="true">
-            <circle class="ring-track" cx="60" cy="60" r="54"></circle>
-            <circle id="ring" class="ring" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"></circle>
-        </svg>
-        <div id="step-countdown"></div>
+    <div class="runner-main">
+        <div class="ring-wrap">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring-track" cx="60" cy="60" r="54"></circle>
+                <circle id="ring" class="ring" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"></circle>
+            </svg>
+            <div id="step-countdown"></div>
+        </div>
+        <div id="move-stage" class="move-stage">
+            <div id="move-figure" class="move-figure"></div>
+            <div class="move-next">Next</div>
+        </div>
     </div>
     <p id="description" class="text-muted"></p>
     <div class="d-flex gap-2">
-        <button id="action-button" class="btn btn-secondary btn-lg flex-fill" type="button">Pause</button>
+        <button id="action-button" class="btn btn-primary btn-lg flex-fill" type="button">Pause</button>
         <button id="skip-button" class="btn btn-outline-secondary btn-lg flex-fill" type="button">Skip</button>
     </div>
     <div class="upcoming text-start">
@@ -40,5 +46,6 @@
 <form id="complete-form" method="post" asp-page-handler="complete" asp-route-id="@Model.Workout.Id"></form>
 <script id="steps" type="application/json">@Html.Raw(Model.StepsJson)</script>
 @section Scripts {
+    <script src="~/js/moves.js" asp-append-version="true"></script>
     <script src="~/js/session.js" asp-append-version="true"></script>
 }

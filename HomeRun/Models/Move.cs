@@ -155,10 +155,10 @@ namespace HomeRun.Models
             if (Type == MoveType.Reps)
             {
                 string lowering = LowerSeconds > 0 ? $", {LowerSeconds}s Lowering" : string.Empty;
-                return new SessionStep { Kind = StepKind.Work, Title = Name, Detail = $"{Range(Reps, RepsMax)} Reps{EachText}{lowering}", Description = Description, Round = progress };
+                return new SessionStep { Kind = StepKind.Work, Title = Name, Detail = $"{Range(Reps, RepsMax)} Reps{EachText}{lowering}", Description = Description, Round = progress, Move = Name, LowerSeconds = LowerSeconds };
             }
             string title = side.Length == 0 ? Name : $"{Name} - {side} {Each}";
-            return new SessionStep { Kind = StepKind.Work, Title = title, Detail = $"{Seconds}s", Description = Description, Seconds = Seconds, Round = progress };
+            return new SessionStep { Kind = StepKind.Work, Title = title, Detail = $"{Seconds}s", Description = Description, Seconds = Seconds, Round = progress, Move = Name };
         }
 
         /// <summary>

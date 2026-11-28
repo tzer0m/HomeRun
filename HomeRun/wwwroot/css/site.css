@@ -21,6 +21,24 @@ html {
   text-align: start;
 }
 
+.card {
+  --bs-card-bg: var(--bs-tertiary-bg);
+  --bs-card-border-color: var(--bs-border-color-translucent);
+  --bs-card-border-radius: 0.75rem;
+  --bs-card-inner-border-radius: calc(0.75rem - 1px);
+  --bs-card-cap-bg: transparent;
+}
+
+.card .table {
+  --bs-table-bg: transparent;
+}
+
+.list-group {
+  --bs-list-group-bg: var(--bs-tertiary-bg);
+  --bs-list-group-border-color: var(--bs-border-color-translucent);
+  --bs-list-group-border-radius: 0.5rem;
+}
+
 .table-day {
   --bs-table-bg: var(--bs-secondary-bg);
 }
@@ -57,11 +75,61 @@ html {
   overflow: hidden;
 }
 
+.runner-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 12rem;
+}
+
+.runner.no-figure .runner-main {
+  justify-content: center;
+}
+
 .ring-wrap {
   position: relative;
-  width: 12rem;
-  height: 12rem;
-  margin: 0 auto;
+  width: 10.5rem;
+  height: 10.5rem;
+  flex-shrink: 0;
+}
+
+.move-stage {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  max-height: 12rem;
+  border-radius: 0.75rem;
+  background: radial-gradient(circle at 50% 35%, #3d454d, #24292e 75%);
+}
+
+.runner.no-figure .move-stage {
+  display: none;
+}
+
+.move-figure, .move-figure svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.move-stage.is-next .move-figure {
+  opacity: 0.45;
+}
+
+.move-next {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.65rem;
+  display: none;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+}
+
+.move-stage.is-next .move-next {
+  display: block;
 }
 
 .ring-wrap svg {
@@ -79,7 +147,7 @@ html {
 }
 
 .ring {
-  stroke: var(--bs-success);
+  stroke: var(--bs-primary);
   stroke-linecap: round;
   stroke-dasharray: 339.3;
   stroke-dashoffset: 0;
@@ -95,14 +163,14 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  font-size: 4rem;
+  padding: 1.75rem;
+  font-size: 3.25rem;
   font-weight: 300;
   line-height: 1.1;
 }
 
 #step-countdown.is-text {
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   font-weight: 400;
 }
 
@@ -128,6 +196,6 @@ html {
 }
 
 .upcoming li.current {
-  border-left-color: var(--bs-success);
+  border-left-color: var(--bs-primary);
   font-weight: 600;
 }

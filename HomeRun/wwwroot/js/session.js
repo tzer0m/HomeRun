@@ -14,6 +14,8 @@ if (stepsElement) {
   let audio = null;
   let wakeLock = null;
   let running = false;
+  let figure = null;
+  let figureName = "";
 
   function show(id, visible) {
     get(id).classList.toggle("d-none", !visible);
@@ -31,6 +33,23 @@ if (stepsElement) {
     gain.connect(audio.destination);
     oscillator.start();
     oscillator.stop(audio.currentTime + milliseconds / 1000);
+  }
+
+  // Shows the current move's animation beside the timer, or the next move faded during rests and get ready countdowns.
+  function showFigure() {
+    const step = steps[index];
+    const target = step.kind === "work" ? step : steps.slice(index + 1).find((x) => x.kind === "work");
+    const name = target ? target.move : "";
+    get("move-stage").classList.toggle("is-next", step.kind !== "work");
+    if (name === figureName) {
+      return;
+    }
+    figureName = name;
+    if (figure) {
+      figure.stop();
+    }
+    figure = name && window.MoveAnimations ? MoveAnimations.play(get("move-figure"), name, target.lowerSeconds) : null;
+    get("run").classList.toggle("no-figure", !figure);
   }
 
   async function requestWakeLock() {
@@ -62,6 +81,9 @@ if (stepsElement) {
     running = false;
     show("run", false);
     show("complete", true);
+    if (figure) {
+      figure.stop();
+    }
     save();
     if (wakeLock) {
       wakeLock.release();
@@ -114,6 +136,7 @@ if (stepsElement) {
     get("ring").style.strokeDashoffset = 0;
     get("description").textContent = step.description;
     showUpcoming();
+    showFigure();
     const timed = step.seconds > 0;
     get("action-button").textContent = timed ? "Pause" : "Done";
     get("step-countdown").textContent = timed ? format(step.seconds) : step.detail;

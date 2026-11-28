@@ -11,12 +11,12 @@ namespace HomeRun.Models
         public StepKind Kind { get; set; }
 
         /// <summary>
-        /// The title shown and announced.
+        /// The title shown.
         /// </summary>
         public string Title { get; set; } = string.Empty;
 
         /// <summary>
-        /// The reps or time shown and announced.
+        /// The reps or time shown.
         /// </summary>
         public string Detail { get; set; } = string.Empty;
 
@@ -34,5 +34,15 @@ namespace HomeRun.Models
         /// The round and set text, such as Round 2 of 3.
         /// </summary>
         public string Round { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The name of the move, used to find its animation, or empty for rests and get ready countdowns.
+        /// </summary>
+        public string Move { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The slow lowering time in seconds, used to play the animation at the same tempo, or 0 for normal tempo.
+        /// </summary>
+        public int LowerSeconds { get; set; }
     }
 }
