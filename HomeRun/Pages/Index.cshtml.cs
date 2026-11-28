@@ -109,10 +109,10 @@ namespace HomeRun.Pages
             FastingPrompt = GetFastingPrompt(latest);
             Streak = HistoryService.GetStreak(await history.GetDaysAsync(Today));
             HashSet<string> done = (await db.Checklist.Where(x => x.Date == Today).Select(x => x.Item).ToListAsync()).ToHashSet();
-            Items.Add(new ChecklistItem { Id = Stretching.Id, Name = Stretching.Name, Done = done.Contains(Stretching.Id), HasSession = true });
+            Items.Add(new ChecklistItem { Id = Stretching.Id, Name = Stretching.Name, Detail = $"{Stretching.Moves.Count} Moves", Done = done.Contains(Stretching.Id), HasSession = true });
             if (Workout != null && Workout.Type != WorkoutType.Rest)
             {
-                Items.Add(new ChecklistItem { Id = Workout.Id, Name = Workout.Name, Done = done.Contains(Workout.Id), HasSession = Workout.Type != WorkoutType.Tick });
+                Items.Add(new ChecklistItem { Id = Workout.Id, Name = Workout.Name, Detail = Workout.Summary, Done = done.Contains(Workout.Id), HasSession = Workout.Type != WorkoutType.Tick });
             }
             Workout other = planService.Plan.Other;
             OtherName = other.Name;

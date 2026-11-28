@@ -16,6 +16,11 @@ namespace HomeRun.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// A short line under the name, such as the rounds and rest.
+        /// </summary>
+        public string Detail { get; set; } = string.Empty;
+
+        /// <summary>
         /// Whether it has been ticked off today.
         /// </summary>
         public bool Done { get; set; }

@@ -4,70 +4,53 @@
     ViewData["Title"] = "History";
 }
 
-<h1 class="h3">History</h1>
-<div class="row g-3 mb-3">
+<h1 class="page-title">History</h1>
+<div class="row g-3 mt-0">
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <div class="text-muted">Current Streak</div>
-                <div class="fs-3">@Model.Streak @(Model.Streak == 1 ? "Day" : "Days")</div>
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value">@Model.Streak @(Model.Streak == 1 ? "Day" : "Days")</div>
             </div>
         </div>
     </div>
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <div class="text-muted">Best Streak</div>
-                <div class="fs-3">@Model.BestStreak @(Model.BestStreak == 1 ? "Day" : "Days")</div>
+                <div class="stat-label">Best Streak</div>
+                <div class="stat-value">@Model.BestStreak @(Model.BestStreak == 1 ? "Day" : "Days")</div>
             </div>
         </div>
     </div>
 </div>
+<h2 class="section-title">Days</h2>
 @if (Model.Days.Count == 0)
 {
     <p class="text-muted">Nothing recorded yet.</p>
 }
 else
 {
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Weight</th>
-                <th>Stretching</th>
-                <th>Workout</th>
-                <th>Other</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (HistoryDay day in Model.Days)
-            {
-                <tr>
-                    <td>@day.Date.ToString("ddd d MMM")</td>
-                    <td>@(day.Kilograms.HasValue ? $"{day.Kilograms:0.0} kg" : "-")</td>
-                    <td><span class="badge rounded-pill @(day.Stretching ? "text-bg-success" : day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@(day.Stretching ? "Done" : day.Date == Model.Today ? "Pending" : "Missed")</span></td>
-                    <td>
-                        @if (day.WorkoutName.Length == 0)
-                        {
-                            <span>-</span>
-                        }
-                        else
-                        {
-                            <span class="badge rounded-pill @(day.WorkoutDone ? "text-bg-success" : day.OtherDone || day.Date == Model.Today ? "text-bg-secondary" : "text-bg-danger")">@day.WorkoutName</span>
-                        }
-                    </td>
-                    <td>
-                        @if (day.OtherDone)
-                        {
-                            <span class="badge rounded-pill text-bg-success">@day.Other</span>
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="list-group">
+        @foreach (HistoryDay day in Model.Days)
+        {
+            bool today = day.Date == Model.Today;
+            <div class="list-group-item d-flex justify-content-between align-items-center gap-3">
+                <div class="text-nowrap">
+                    <div class="item-name">@day.Date.ToString("ddd d MMM")</div>
+                    <div class="item-sub">@(day.Kilograms.HasValue ? $"{day.Kilograms:0.0} kg" : "No Weigh In")</div>
+                </div>
+                <div class="d-flex flex-wrap gap-1 justify-content-end">
+                    <span class="badge @(day.Stretching ? "soft-success" : today ? "soft" : "soft-danger")">Stretching</span>
+                    @if (day.WorkoutName.Length > 0)
+                    {
+                        <span class="badge @(day.WorkoutDone ? "soft-success" : day.OtherDone || today ? "soft" : "soft-danger")">@day.WorkoutName</span>
+                    }
+                    @if (day.OtherDone)
+                    {
+                        <span class="badge soft-success">@day.Other</span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 }

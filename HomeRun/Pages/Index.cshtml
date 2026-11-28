@@ -4,34 +4,37 @@
     ViewData["Title"] = "Today";
 }
 
-<div class="d-flex justify-content-between align-items-baseline">
-    <h1 class="h3">@Model.Today.ToString("dddd d MMMM")</h1>
-    <span class="text-muted">
-        @if (Model.Streak > 0)
-        {
-            <span class="badge bg-success me-2">@Model.Streak @(Model.Streak == 1 ? "Day" : "Days") Streak</span>
-        }
-        Week @Model.Week
-    </span>
+<div class="d-flex justify-content-between align-items-center gap-2">
+    <div>
+        <h1 class="page-title">@Model.Today.ToString("dddd d MMMM")</h1>
+        <div class="page-sub">Week @Model.Week</div>
+    </div>
+    @if (Model.Streak > 0)
+    {
+        <span class="badge soft-success">@Model.Streak @(Model.Streak == 1 ? "Day" : "Days") Streak</span>
+    }
 </div>
-<div class="card mb-3">
+<div class="card mt-3">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
             @if (Model.FastingEnabled)
             {
                 <div>
-                    <div class="text-muted">@(Model.Eating ? "Eating Window Closes In" : "Eating Window Opens In")</div>
-                    <div class="fs-3" id="countdown" data-target="@Model.FastingTarget.ToUnixTimeMilliseconds()">@Model.RemainingText</div>
+                    <div class="stat-label">@(Model.Eating ? "Eating Window Closes In" : "Eating Window Opens In")</div>
+                    <div class="stat-value" id="countdown" data-target="@Model.FastingTarget.ToUnixTimeMilliseconds()">@Model.RemainingText</div>
                 </div>
             }
             else
             {
-                <span class="text-muted">Fasting</span>
+                <div>
+                    <div class="item-name">Fasting</div>
+                    <div class="item-sub">Off</div>
+                </div>
             }
             <div class="d-flex align-items-center gap-3">
                 @if (Model.FastingEnabled)
                 {
-                    <span class="badge @(Model.Eating ? "bg-success" : "bg-secondary")">@(Model.Eating ? "Eating" : "Fasting")</span>
+                    <span class="badge @(Model.Eating ? "soft-success" : "soft")">@(Model.Eating ? "Eating" : "Fasting")</span>
                 }
                 <form class="form-check form-switch m-0" method="post" asp-page-handler="Fasting">
                     <input type="hidden" name="enabled" value="@(Model.FastingEnabled ? "false" : "true")" />
@@ -41,13 +44,14 @@
         </div>
         @if (Model.FastingPrompt.Length > 0)
         {
-            <div class="text-warning mt-2">@Model.FastingPrompt</div>
+            <div class="text-warning small mt-2">@Model.FastingPrompt</div>
         }
     </div>
 </div>
+<h2 class="section-title">Checklist</h2>
 <ul class="list-group checklist">
     <li class="list-group-item @(Model.WeightRecorded ? "list-group-item-success" : "") d-flex justify-content-between align-items-center">
-        <span>Weigh In</span>
+        <div class="item-name">Weigh In</div>
         <div class="d-flex align-items-center gap-3">
             <span class="entry-view @(Model.WeightRecorded ? "" : "d-none")">@Model.Weight?.ToString("0.0") kg</span>
             <form class="entry-form d-flex gap-2 @(Model.WeightRecorded ? "d-none" : "")" method="post">
@@ -60,7 +64,13 @@
     @foreach (ChecklistItem item in Model.Items)
     {
         <li class="list-group-item @(item.Done ? "list-group-item-success" : "") d-flex justify-content-between align-items-center">
-            <span>@item.Name</span>
+            <div>
+                <div class="item-name">@item.Name</div>
+                @if (item.Detail.Length > 0)
+                {
+                    <div class="item-sub">@item.Detail</div>
+                }
+            </div>
             <div class="d-flex align-items-center gap-3">
                 @if (item.HasSession && !item.Done)
                 {
@@ -74,7 +84,10 @@
         </li>
     }
     <li class="list-group-item @(Model.OtherDone ? "list-group-item-success" : "") d-flex justify-content-between align-items-center gap-3">
-        <span class="text-nowrap">@Model.OtherName</span>
+        <div class="text-nowrap">
+            <div class="item-name">@Model.OtherName</div>
+            <div class="item-sub">Optional</div>
+        </div>
         <div class="d-flex align-items-center gap-3 flex-grow-1 justify-content-end" style="min-width: 0">
             <span class="entry-view text-end @(Model.OtherDone ? "" : "d-none")">@Model.OtherNote</span>
             <form class="entry-form d-flex gap-2 flex-grow-1 justify-content-end @(Model.OtherDone ? "d-none" : "")" style="min-width: 0" method="post" asp-page-handler="Other">

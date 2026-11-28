@@ -4,16 +4,18 @@
     ViewData["Title"] = Model.Workout.Name;
 }
 
-<div id="start" class="text-center">
-    <h1>@Model.Workout.Name</h1>
-    <p class="text-muted">@Model.Workout.Summary</p>
-    <button id="start-button" class="btn btn-primary btn-lg" type="button">Start</button>
+<div id="start" class="card text-center">
+    <div class="card-body py-4">
+        <h1 class="page-title">@Model.Workout.Name</h1>
+        <div class="page-sub mb-3">@(Model.Workout.Summary.Length > 0 ? Model.Workout.Summary : $"{Model.Workout.Moves.Count} Moves")</div>
+        <button id="start-button" class="btn btn-primary btn-lg px-5" type="button">Start</button>
+    </div>
 </div>
 <div id="run" class="runner text-center d-none">
     <div class="progress">
         <div id="progress" class="progress-bar" style="width: 0%"></div>
     </div>
-    <div class="runner-round"><span id="round" class="badge rounded-pill text-bg-secondary"></span></div>
+    <div class="runner-round"><span id="round" class="badge soft"></span></div>
     <h1 id="title" class="fs-3 fw-semibold"></h1>
     <div class="runner-main">
         <div class="ring-wrap">
@@ -38,10 +40,12 @@
         <ul id="upcoming" class="list-unstyled m-0"></ul>
     </div>
 </div>
-<div id="complete" class="text-center d-none">
-    <h1>Complete</h1>
-    <p id="saved" class="text-muted"></p>
-    <a class="btn btn-primary btn-lg" href="/">Back to Today</a>
+<div id="complete" class="card text-center d-none">
+    <div class="card-body py-4">
+        <h1 class="page-title">Complete</h1>
+        <div id="saved" class="page-sub mb-3"></div>
+        <a class="btn btn-primary btn-lg" href="/">Back to Today</a>
+    </div>
 </div>
 <form id="complete-form" method="post" asp-page-handler="complete" asp-route-id="@Model.Workout.Id"></form>
 <script id="steps" type="application/json">@Html.Raw(Model.StepsJson)</script>

@@ -39,8 +39,73 @@ html {
   --bs-list-group-border-radius: 0.5rem;
 }
 
-.table-day {
-  --bs-table-bg: var(--bs-secondary-bg);
+main, .navbar > .container {
+  max-width: 36rem;
+}
+
+main {
+  margin: 0 auto;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.page-sub, .item-sub, .stat-label {
+  color: var(--bs-secondary-color);
+  font-size: 0.85rem;
+}
+
+.section-title {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.section-title .sub {
+  color: var(--bs-secondary-color);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.item-name {
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-row {
+  --bs-list-group-bg: var(--bs-secondary-bg);
+}
+
+.badge.soft {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-body-color);
+  font-weight: 500;
+}
+
+.badge.soft-primary {
+  background: rgba(77, 148, 255, 0.2);
+  color: #8db8ff;
+  font-weight: 500;
+}
+
+.badge.soft-success {
+  background: rgba(25, 135, 84, 0.25);
+  color: #75b798;
+  font-weight: 500;
+}
+
+.badge.soft-danger {
+  background: rgba(220, 53, 69, 0.2);
+  color: #ea868f;
+  font-weight: 500;
 }
 
 .checklist .list-group-item {
